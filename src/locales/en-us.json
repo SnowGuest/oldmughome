@@ -1,0 +1,12 @@
+{
+    "component": {
+        "header": {
+            "frontPage": "frontPage"
+        }
+    },
+    "pages": {
+        "login": {
+            "loginButton": "login"
+        }
+    }
+}

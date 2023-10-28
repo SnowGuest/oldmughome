@@ -1,0 +1,12 @@
+{
+    "pages": {
+        "login": {
+            "loginButton": "登录"
+        }
+    },
+    "component": {
+        "header": {
+            "frontPage": "首页"
+        }
+    }
+}
