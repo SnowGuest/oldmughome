@@ -5,20 +5,23 @@ import { useAppload } from './utils';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
 import useHeader from "@/components/useHeader.vue"
-interface Setting {
+export interface App {
     locale: "zh-cn" | "en-us";
+    setLocale: (locale: App["locale"]) => void;
 }
-const setting = reactive<Setting>({
+const setting = reactive<App>({
     locale: "zh-cn",
+    setLocale(locale) {
+        setting.locale = locale;
+        dayjs.locale(setting.locale);
+        i18n.locale.value = setting.locale
+    }
 });
 const i18n = useI18n();
 
 const locale = computed(() => setting.locale === "zh-cn" ? zhCN : enUS)
 const dateLocale = computed(() => setting.locale === "zh-cn" ? dateZhCN : dateEnUS);
-watch(setting, () => {
-    dayjs.locale(setting.locale);
-    i18n.locale.value = setting.locale
-})
+
 provide("app", setting);
 useAppload()
 </script>
@@ -31,8 +34,6 @@ useAppload()
             </n-message-provider>
         </n-notification-provider>
     </n-config-provider>
-    <useHeader />
-    
 </template>
 
 <style scoped></style>

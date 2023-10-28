@@ -15,20 +15,20 @@ interface CommentPost {
  * @param postId 帖子id
  * */
 export function commentPost( postId: Article["id"], content: string, parentCommentId?: string | number, monfVote?: any) {
-    let body = {
+    let data = {
         postId,
         content,
         parentCommentId,
     };
     if (monfVote) {
-        Reflect.set(body, "monfVote", {
+        Reflect.set(data, "monfVote", {
             ...monfVote
         })
     }
     return request<CommentPost>("comment/publish", {
         method: "POST",
        
-        body
+        data
     }, {
         130: "您已经投过票了"
     });
@@ -41,6 +41,6 @@ export function commentLike( commentId: Article["id"], cancel?: boolean) {
     return request<CommentPost>(`like/comment/${commentId}`, {
         method: "GET",
        
-        query: { cancel }
+        params: { cancel }
     });
 }

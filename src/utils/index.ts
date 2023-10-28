@@ -1,12 +1,11 @@
-import { Article } from "@/api/post";
-import { LoginBody, User } from "@/api/user";
+import type { Article } from "@/api/post";
+import type { LoginBody, User } from "@/api/user";
 import { reactive } from "vue-demi"
 import type { UploadFileInfo } from 'naive-ui'
 
 import { uploaderFile } from "@/api/file";
 import { defineCustomElement } from "vue";
 import Bilibili from '../components/bilibili.ce.vue'
-import dayjs from "dayjs";
 import { useUserStore } from "@/stores/user";
 
 export function getUserMap(user: User[] = [], userMap?: Map<number, User>) {

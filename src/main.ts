@@ -16,10 +16,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 type MessageSchema = typeof zhCn
 const i18n = createI18n<[MessageSchema], "zh-cn" | "en-us">({
   locale: "zh-cn",
+  legacy: false,
   messages: {
     "zh-cn": zhCn,
     "en-us": enUS
-  }
+  },
 })
 
 dayjs.locale('zh-cn') // 全局使用

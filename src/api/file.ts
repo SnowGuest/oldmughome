@@ -1,5 +1,5 @@
 import { request } from "@/utils/request"
-import { User } from "./user";
+import type { User } from "./user";
 
 export interface FileBody {
     FileId: string;
@@ -19,8 +19,7 @@ export function uploaderFile(file: File) {
     fd.append("file", file)
     return request<FileBody>("/upload/file", {
         method: "POST",
-        body: fd,
-        key:`/upoload/file/${Math.random()}`
+        data: fd,
     }, {
         "FetchError": "上传失败"
     });

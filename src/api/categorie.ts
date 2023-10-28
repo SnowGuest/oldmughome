@@ -23,13 +23,13 @@ export function getCategories( params?: CategoriesParams) {
     return request<CategoriesBody>("category", {
         method: "GET",
         params,
-        key
+        
     });
 
 }
 export function getCategorie( id: number | string) {
     return request<Categorie>(`category/${id}`, {
         method: "GET",
-        key
+        
     })
 }

@@ -1,5 +1,4 @@
 import { request } from "@/utils/request"
-import { FileBody } from "./file";
 
 export interface LoginParams {
     account: string; //    用户名或邮箱
@@ -45,8 +44,8 @@ export interface User {
     continuousPunchCount: string;
     bio?: string,
     userCoverUrl?: string
-    postCount:string;
-    followerCount:string;
+    postCount: string;
+    followerCount: string;
     relations?: {
         /* 是否关注了此用户 */
         isSubscribed?: boolean;
@@ -54,35 +53,32 @@ export interface User {
 
 }
 
-export function getUserInfo(key: string, id: string | number) {
+export function getUserInfo(id: string | number) {
     return request<User>(`user/${id}`, {
         method: "GET",
-        key
     });
 
 }
 
-export function login(body: LoginParams) {
+export function login(data: LoginParams) {
     return request<LoginBody>("account/login", {
         method: "POST",
-        body,
-        key:"/login"
+        data,
     }, {
         13: "该账号未注册",
         12: "用户名或者密码错误",
         21: "账号或密码错误",
-        1001:"账号或密码错误"
+        1001: "账号或密码错误"
     });
 
 }
 
-export function register(body: RegisterParams) {
+export function register(data: RegisterParams) {
     return request<LoginBody>("account/register", {
         method: "POST",
-        body,
-        key:"/register"
+        data,
     }, {
-        41:"验证码错误",
+        41: "验证码错误",
         11: "邮箱已被占用",
         21: "账号或密码错误",
         120: "验证码错误",
@@ -96,16 +92,15 @@ export interface UpdateUserInfoParams {
     userCover?: File;
 }
 
-export function updateUserInfo(key: string, id: User["id"], body: UpdateUserInfoParams) {
+export function updateUserInfo( id: User["id"], data: UpdateUserInfoParams) {
     const fd = new FormData();
-    Object.keys(body).forEach(k => {
-        const v = body[k as keyof UpdateUserInfoParams]
+    Object.keys(data).forEach(k => {
+        const v = data[k as keyof UpdateUserInfoParams]
         if (v) fd.append(k, v)
     })
     return request<LoginBody>(`/account/${id}`, {
-        key,
         method: "PUT",
-        body: fd
+        data: fd
     }, {
         "-1": "您只能修改自己的账户信息"
     });
@@ -114,11 +109,10 @@ export function updateUserInfo(key: string, id: User["id"], body: UpdateUserInfo
 /**
  * @description 更新用户email
  * */
-export function updateUserEmail(key: string, id: User["id"], body: UpdateUserInfoParams) {
+export function updateUserEmail( id: User["id"], data: UpdateUserInfoParams) {
     return request<LoginBody>(`/account/${id}/email`, {
-        key,
         method: "PUT",
-        body
+        data
     }, {
         "-1": "您只能修改自己的账户信息"
     });
@@ -132,12 +126,12 @@ export function updateUserEmail(key: string, id: User["id"], body: UpdateUserInf
  * @POST 更换上传头像
  * @param file File
  * */
-export function uploaderUserAvatar(key: string, id: User["id"], file: File) {
+export function uploaderUserAvatar( id: User["id"], file: File) {
     const fd = new FormData()
     fd.append("avatar", file)
     return request<LoginBody>(`account/${id}`, {
         method: "PUT",
-        body: fd,
+        data: fd,
     }, {
         "FetchError": "上传文件失败"
     });
@@ -148,11 +142,10 @@ export function uploaderUserAvatar(key: string, id: User["id"], file: File) {
  * @GET 忘记密码
  * @param file File
  * */
-export function forgetPassWord(key:string,account: string) {
+export function forgetPassWord( account: string) {
     return request<null>("account/forget", {
         method: "GET",
-        key,
-        query: { account }
+        params: { account }
     }, {
         "13": "未找到此用户"
     });
@@ -163,19 +156,17 @@ export function forgetPassWord(key:string,account: string) {
  * @description 关注用户
  * */
 
-export function followUserApi(key:string,userId: string | number) {
+export function followUserApi( userId: string | number) {
     return request<null>(`/user/follow/${userId}`, {
         method: "GET",
-        key,
     }, {
         13: "未找到此用户",
         34: "您不能关注您自己"
     });
 }
-export function unfollowUserApi(key:string,userId: string | number) {
+export function unfollowUserApi( userId: string | number) {
     return request<null>(`/user/unfollow/${userId}`, {
         method: "GET",
-        key:`/article/followUser`
     }, {
         "13": "未找到此用户"
     });
@@ -185,12 +176,11 @@ export function unfollowUserApi(key:string,userId: string | number) {
 /**
  * @
  * */
-export async function getCaptcha(key:string) {
+export async function getCaptcha(key: string) {
     return request<{
         uuid: string;
         imgBase64: string;
     }>(`/captcha`, {
-        key,
         method: "GET",
     });
 
@@ -200,10 +190,9 @@ export async function getCaptcha(key:string) {
 /**
  * @
  * */
-export async function sendEmailCode(key:string,email: string) {
+export async function sendEmailCode( email: string) {
     return request<null>(`/account/sendRegisterCode`, {
         method: "GET",
-        key,
         params: {
             email
         }

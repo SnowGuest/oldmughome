@@ -6,7 +6,6 @@ export function checkMd5(md5: string,
     type: string) {
     return request<null>("check", {
         method: "get",
-        key: "reset/account",
         params: {
             md5,
             t,
@@ -19,8 +18,7 @@ export function checkMd5(md5: string,
 export function resetPassword(md5: string, value: string) {
     return request<null>("/account/resetAccount", {
         method: "POST",
-        key: "reset/account/reset",
-        body: {
+        data: {
             md5,
             value
         }
@@ -34,17 +32,15 @@ export function resetPassword(md5: string, value: string) {
 export function sendResetEmail(newEmail: string) {
     return request<null>("/account/sendResetEmail", {
         method: "GET",
-        key: "reset/account/reset/login/email",
         params: { newEmail }
     })
 }
 export function resetLoginPassword(password: string, id: string) {
-    const body = new FormData();
-    body.append("Password",password)
+    const data = new FormData();
+    data.append("Password",password)
     return request<null>(`/account/${id}`, {
         method: "PUT",
-        key: "reset/account/reset/login/password",
-        body
+        data
     })
 }
 
@@ -53,7 +49,6 @@ export function resetLoginPassword(password: string, id: string) {
 export function resetEmailLocal(md5: string) {
     return request<null>("/account/resetEmail", {
         method: "GET",
-        key: "reset/email",
         params: { md5 }
     }, {
         16: "此邮箱已被其他用户绑定"

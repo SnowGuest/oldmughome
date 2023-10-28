@@ -1,4 +1,4 @@
-import { ErrorInstall } from "@/utils/request";
+import { ErrorInstall, request } from "@/utils/request";
 import { ArticleParams, ArticlesBody } from "./post";
 
 /**
@@ -15,7 +15,6 @@ import { ArticleParams, ArticlesBody } from "./post";
     const result = await request<ArticlesBody>("vote/monf", {
         method: "GET",
         params,
-        key
     }, opt);
 
     return result

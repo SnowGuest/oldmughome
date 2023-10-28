@@ -1,3 +1,4 @@
+import { request } from "@/utils/request";
 import { Categorie } from "./categorie";
 import { Comment, GetArticleParams } from "./post";
 import { User } from "./user";
@@ -20,12 +21,12 @@ export interface Monf2023ApplyMember {
  * @POST monf2023报名
  * @param title 帖子标题
  * */
-export function monf2023apply(key:string,body: Monf2023ApplyParams) {
+export function monf2023apply(data: Monf2023ApplyParams) {
     return request<Monf2023ApplyBody>(
         "event/monf/work/publish",
         {
             method: "POST",
-            body,
+            data,
            
         },
         {
@@ -35,12 +36,12 @@ export function monf2023apply(key:string,body: Monf2023ApplyParams) {
 }
 
 
-export function monf2023Edit(key:string,body: Monf & Monf2023ApplyParams) {
+export function monf2023Edit(data: Monf & Monf2023ApplyParams) {
     return request<Monf2023ApplyBody>(
-        `/event/monf/work/${body.id}`,
+        `/event/monf/work/${data.id}`,
         {
             method: "PATCH",
-            body,
+            data,
            
         },
         {
@@ -192,13 +193,13 @@ export interface monf2023CommentParams {
 /**
  * @POST monf2023发布评论
  * */
-export function monf2023Comment( body: monf2023CommentParams) {
+export function monf2023Comment( data: monf2023CommentParams) {
     return request<Monf2023CommentBody>(
         `/event/monf/comment/publish`,
         {
            
             method: "POST",
-            body
+            data
         },
         { 130: "你已经打过分了" }
     );
@@ -210,13 +211,13 @@ export function monf2023Comment( body: monf2023CommentParams) {
 /**
  * @POST monf2023更新评论
  * */
-export function monf2023CommentUpdate(workCommentId: number,  body: monf2023CommentParams) {
+export function monf2023CommentUpdate(workCommentId: number,  data: monf2023CommentParams) {
     return request<Monf2023CommentBody>(
         `/event/monf/comment/${workCommentId}`,
         {
            
             method: "PATCH",
-            body
+            data
         },
     );
 }
@@ -283,7 +284,7 @@ export function monfLike( monfWorkCommentId: number,) {
  * @param reason 削票理由
  * */
 export function cutOffTicketAPI(
-    key:string,
+    
     workCommentId: string,
     reason?: string | null
 ) {

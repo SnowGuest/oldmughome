@@ -1,6 +1,6 @@
 import type { Categorie } from "./categorie";
-import { User } from "./user";
-import { ErrorInstall, request } from "@/utils/request";
+import type { User } from "./user";
+import { type ErrorInstall, request } from "@/utils/request";
 export interface Article {
     commentCount: number;
     content: string;
@@ -183,12 +183,12 @@ export interface updateArticleParams extends setArticleParams {
  * @POST 发帖
  * @param title 帖子标题
  * */
-export function setArticle(body: setArticleParams) {
+export function setArticle(data: setArticleParams) {
     return request<ArticleBody>(
         "post/publish",
         {
             method: "POST",
-            body,
+            data,
         },
         {
             62: "发帖失败,请选择正确的分区",
@@ -200,8 +200,8 @@ export function setArticle(body: setArticleParams) {
  * @POST 重新发帖
  * @param title 帖子标题
  * */
-export function updateArticle(body: updateArticleParams) {
-    const newBody = JSON.parse(JSON.stringify(body));
+export function updateArticle(data: updateArticleParams) {
+    const newBody = JSON.parse(JSON.stringify(data));
     const postId = newBody.id;
     Reflect.deleteProperty(newBody, "id");
     Reflect.deleteProperty(newBody, "categorieId");
@@ -209,9 +209,8 @@ export function updateArticle(body: updateArticleParams) {
     return request<ArticleBody>(
         `/post/${postId}`,
         {
-            key:`/post/update/${postId}`,
             method: "PATCH",
-            body: newBody,
+            data: newBody,
         },
         {
             62: "发帖失败,请选择正确的分区",
@@ -229,7 +228,7 @@ export function like( id: Article["id"], cancel?: boolean) {
         {
             method: "GET",
            
-            query: { cancel },
+            params: { cancel },
         },
         {}
     );

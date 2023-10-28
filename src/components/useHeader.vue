@@ -1,11 +1,17 @@
 <template>
-    <div class="mug-header"></div>
+    <div class="mug-header">{{ $t("component.header.frontPage") }}</div>
+    <div @click="() => {
+        app?.setLocale('en-us')
+    }">点击切换</div>
 </template>
 
 <script lang="ts" setup>
+import { inject } from 'vue';
+import type { App } from "@/App.vue"
+const app = inject<App>("app");
 </script>
 <style lang="scss" scoped>
-.mug-header{
+.mug-header {
     background-color: #fff;
     box-shadow: 0 5px 40px #113a5d1a;
     box-sizing: border-box;

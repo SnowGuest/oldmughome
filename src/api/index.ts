@@ -7,9 +7,8 @@ export interface Banner {
 };
 export type BannerBody = { banners: Banner[] }
 
-export function getBanners(key: string) {
+export function getBanners() {
     return request<BannerBody>("/banner", {
         method: "GET",
-        key
     })
 }
