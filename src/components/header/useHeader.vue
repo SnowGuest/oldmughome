@@ -18,6 +18,7 @@ import moblieHeader from "./moblieHeader.vue";
 function checklocal() {
     app?.setLocale('en-us')
 }
+
 </script>
 <style lang="scss" scoped>
 .mug-headerBody {
@@ -27,6 +28,6 @@ function checklocal() {
     padding: 0 20px;
     transition: all .3s ease-in-out;
     width: 100%;
-    z-index: 114514;
+    z-index: 10;
 }
 </style>

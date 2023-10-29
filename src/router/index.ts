@@ -15,11 +15,18 @@ const router = createRouter({
       {
         path: "search",
         component: () => import("@/pages/search/index.vue")
+      }, {
+        path: "categories",
+        component: () => import("@/pages/categories/index.vue")
+      }, {
+        path: "categorie/:id",
+        component: () => import("@/pages/categorie/index.vue")
+      }, {
+        path: "article/:id",
+        component: () => import("@/pages/article/index.vue")
+
       }
-        // ,{
-        //   path: "categories",
-        //   component
-        // },{
+        // {
         //   path: "monf2023",
         //   component
         // }

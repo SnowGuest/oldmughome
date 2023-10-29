@@ -9,6 +9,9 @@
         <img src="@/assets/icon/netword.svg" alt="">
         网络错误,点击重试
     </div>
+    <div v-show="status === 'end'" @click="pInst.reload()" class="commonBody ">
+        已经到底啦~
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -25,6 +28,7 @@ defineProps<Props>()
     align-items: center;
     justify-content: center;
     color: #c2c2c2;
+    padding: 16px;
 
     img {
         object-fit: cover;

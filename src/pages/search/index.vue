@@ -1,24 +1,27 @@
 <template>
-    <div class="searchPageBody">
-        <div class="searchStickyBody">
-            <div class="searchBody flex items-center">
-                <input type="text" v-model="searchText" />
-                <n-button class="ml-3" type="info">搜索全站</n-button>
+    <ScrollView @load="articlePagination.next">
+        <div class="searchPageBody">
+            <div class="searchStickyBody">
+                <div class="searchBody flex items-center">
+                    <input type="text" v-model="searchText" />
+                    <n-button class="ml-3" type="info">搜索全站</n-button>
 
 
+                </div>
+                <n-tabs>
+                    <n-tab v-for="(e, i) in tabs" :key="e" :name="e" class="tabText">
+
+                    </n-tab>
+                </n-tabs>
             </div>
-            <n-tabs>
-                <n-tab v-for="(e, i) in tabs" :key="e" :name="e" class="tabText">
-
-                </n-tab>
-            </n-tabs>
+            <ul class="list">
+                <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
+                    :user="users?.get(item.createdUserId)" :article="item"
+                    :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
+            </ul>
+            <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" />
         </div>
-        <ul class="list">
-            <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
-                :user="users?.get(item.createdUserId)" :article="item"
-                :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
-        </ul>
-    </div>
+    </ScrollView>
 </template>
 
 <script lang="ts" setup>
@@ -30,6 +33,8 @@ import { InstanceBody } from '@/utils/request';
 import { ref } from 'vue';
 import { useRoute } from "vue-router"
 import ArticleVue from "@/components/article/item.vue";
+import ScrollView from '@/components/scrollview/scrollview.vue';
+import ListStatus from '@/components/listStatus.vue';
 
 const tabs = ["帖子", "用户"]
 const searchText = ref("");
@@ -46,7 +51,7 @@ function onLoadArticle(userMap?: typeof users) {
     return useApiToPagination<Article, InstanceBody<ArticlesBody>, "id">(getArticleList, {
         page: 1,
         pageSize: 10,
-        content:searchText.value
+        content: searchText.value
     }, "id", ({ data: { post, includes } }) => {
         getUserMap(includes.users, userMap);
         includes.categories.forEach(e => {
@@ -82,7 +87,7 @@ const { list: articles } = articlePagination;
     height: 100%;
     width: 1000px;
     max-width: 100vw;
-    margin: 10vmin 16px 0;
+    margin: 10vmin auto 0;
 
     :deep(.tabText) {
         font-size: 18px;
@@ -115,6 +120,7 @@ const { list: articles } = articlePagination;
         font-weight: 200;
     }
 }
+
 .list {
     border-radius: 8px;
 

@@ -1,39 +1,43 @@
 <template>
-    <!-- <div class="flex main_page column items-center" v-show="base?.loading">
+    <ScrollView @load="articlePagination.next()">
+
+        <!-- <div class="flex main_page column items-center" v-show="base?.loading">
         <Loading>加载中. . .</Loading>
     </div> -->
-    <!-- v-show="!base?.loading" -->
-    <div class="main_page">
-        <!-- autoplay -->
-        <n-carousel show-arrow class="swiper">
-            <div class="swiper-image" v-for="image in  banners ">
-                <img draggable="false" :src="image.imageUrl" alt="图片加载失败" />
-                <div class="swiper-image-mask">
-                    <span>{{ image.description }}</span>
-                    <button>
-                        <RouterLink :to="image.linkUrl" target="_blank">
-                            查看详情
-                        </RouterLink>
-                    </button>
+        <!-- v-show="!base?.loading" -->
+        <div class="main_page">
+            <!-- autoplay -->
+            <n-carousel show-arrow class="swiper">
+                <div class="swiper-image" v-for="image in  banners ">
+                    <img draggable="false" :src="image.imageUrl" alt="图片加载失败" />
+                    <div class="swiper-image-mask">
+                        <span>{{ image.description }}</span>
+                        <button>
+                            <RouterLink :to="image.linkUrl" target="_blank">
+                                查看详情
+                            </RouterLink>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-        </n-carousel>
-        <!-- <List :error="pageError" :immediate-check="false" v-model:loading="pageLoading" :finished="pageFinished"
+            </n-carousel>
+            <!-- <List :error="pageError" :immediate-check="false" v-model:loading="pageLoading" :finished="pageFinished"
             finished-text="没有更多了" @load="pageLoad"> -->
-        <ul class="list">
-            <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
-                :user="users?.get(item.createdUserId)" :article="item"
-                :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
+            <ul class="list">
+                <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
+                    :user="users?.get(item.createdUserId)" :article="item"
+                    :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
+            </ul>
             <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" />
-        </ul>
-        <!-- <template>
+            <!-- <template>
                 <div class="list_error">
                     <Empty image="network" description="请求数据失败" />
                 </div>
             </template> -->
-        <!-- </List> -->
-    </div>
+            <!-- </List> -->
+        </div>
+    </ScrollView>
+
     <!-- <SideBar /> -->
 </template>
 
@@ -42,7 +46,7 @@ import { useHead } from '@unhead/vue'
 import { NCarousel } from "naive-ui"
 import ArticleVue from "@/components/article/item.vue";
 // import SideBar from '@/components/SideBar/index.vue';
-
+import ScrollView from "@/components/scrollview/scrollview.vue"
 import { Article, ArticlesBody, getArticleList } from '@/api/post';
 
 import { Categorie } from '@/api/categorie';
@@ -64,8 +68,6 @@ const banners = ref<Banner[]>([])
 // let articles = ref<Map<Article["id"], Article>>(new Map())
 // let articlePagination = getDefaultPInstance<Article, "id">();
 function onLoadArticle(userMap?: typeof users) {
-    // try {
-    // pageLoading.value = true;
     return useApiToPagination<Article, InstanceBody<ArticlesBody>, "id">(getArticleList, {
         page: 1,
         pageSize: 10
@@ -92,44 +94,6 @@ function onLoadArticle(userMap?: typeof users) {
             return e
         })
     });
-
-    // articles = result.list
-    // articlePagination = result
-    // const { data, error, refresh, execute } = await getArticleList({
-    //     ...page
-    // })
-    // if (!data.value) throw new Error("不存在值")
-    // console.log(data.value.data, '返回的结果')
-    // if (data.value.data.post.length <= 0) pageFinished.value = true;
-    // data.value.data.post.forEach(e => {
-    //     if (typeof e.relations === "undefined") {
-    //         e.relations = {
-    //             postLikeUserId: [],
-    //             isLiked: false,
-    //             categoryIds: [0, null],
-    //             commentIds: [],
-    //         }
-    //     }
-    //     if (typeof e.relations.isLiked !== "boolean") {
-    //         e.relations.isLiked = false
-    //     }
-    //     if (!Array.isArray(e.relations.categoryIds)) {
-    //         e.relations.categoryIds = [0, null]
-    //     }
-    //     articles.value.set(e.id, e)
-    // })
-    // return {
-    //     users: getUserMap(data.value.data.includes.users, userMap),
-    //     categories: new Map(data.value.data.includes.categories.map(e => [e.id, e]))
-    // }
-    // } catch (error) {
-    //     if (error instanceof Error) {
-    //         pageError.value = true
-    //         console.log(error)
-    //     }
-    // } finally {
-    //     pageLoading.value = false
-    // }
 }
 function setLike(bool: boolean, item: Article) {
     item.relations.isLiked = bool
@@ -170,6 +134,8 @@ useHead({
 .main_page {
     flex: 1;
     width: 100%;
+    margin: 0 auto;
+    padding-top: 16px;
 }
 
 .main_page,
@@ -250,6 +216,7 @@ useHead({
 }
 
 .list {
+    min-height: 40vh;
     border-radius: 8px;
     background-color: var(--mug-card-bg);
 

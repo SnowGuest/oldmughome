@@ -8,7 +8,7 @@
     --mug-tag-bg: #f2f2f2;
     --mug-tag-Text: rgba(0, 0, 0, .65);
     --mug-text: #212121;
-    --mug-sub-text: rgba(14, 21, 28, 0.6);
+    --mug-sub-text: #0e151c99;
     --mug-card-text: var(--mug-text);
     --mug-tag-line: #f1f1f1;
     --mug-header-bg: #FFFFFF;
@@ -26,5 +26,8 @@ body,
     max-height: 100vh;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
+}
+.column{
     flex-direction: column;
 }

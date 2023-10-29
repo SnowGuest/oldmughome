@@ -27,20 +27,23 @@ useApploadData()
 // #F5A91D
 const themeOverrides = {
     common: {
-      primaryColor: '#FF0000'
+        primaryColor: '#FF0000'
     },
-   
-  }
+
+}
 </script>
 
 <template>
     <n-config-provider :theme-overrides="themeOverrides" abstract :locale="locale" :date-locale="dateLocale">
-        <n-notification-provider>
-            <n-message-provider>
-                <useAppload />
-                <RouterView />
-            </n-message-provider>
-        </n-notification-provider>
+        <n-loading-bar-provider>
+            <n-notification-provider>
+                <n-message-provider>
+                    <useAppload />
+                    <RouterView />
+                </n-message-provider>
+            </n-notification-provider>
+        </n-loading-bar-provider>
+
     </n-config-provider>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <header class="mug_pc-header">
+    <header class="mug_pc-header" >
         <nav class="flex items-center justify-center  pr-3 mr-3 mug_pc-logoBody">
             <img class="logo" src="@/assets/image/logo.png" alt="">
             <img class="logoText" src="@/assets/image/logoText.png" alt="">
@@ -20,9 +20,11 @@
 import avatar from "../user/avatar.vue"
 import search from "./search.vue"
 import i18n from "./i18n.vue"
-
+// import { provide, ref } from "vue";
+// import { DIRECTION } from "@/utils";
 
 const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
+
 </script>
 <style lang="scss" scoped>
 @media only screen and (min-width: 768px) {
@@ -38,6 +40,10 @@ const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
     }
 }
 
+.mug_pc-header-hide {
+    transform: translateY(-100%);
+}
+
 .mug_pc-header {
     display: none;
     max-width: 1200px;
@@ -46,6 +52,7 @@ const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
     margin: 0 auto;
     align-items: center;
     background: url("@/assets/image/headerGround.webp") no-repeat 50%/1400px;
+    transform: all 0.31s;
 
     &-menu {
         // height: 100%;
@@ -68,5 +75,4 @@ const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
         object-fit: cover;
         height: 20px;
     }
-}
-</style>
+}</style>

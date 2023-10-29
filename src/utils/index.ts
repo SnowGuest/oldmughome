@@ -116,7 +116,7 @@ export interface useApiToPaginationInstance<T = null> {
     status: Ref<"loading" | "netword" | "end" | "ready" | "zero" | "error">;
     list: Ref<T>;
     next: (page?: number, config?: Record<string, any>) => Promise<void>;
-    reload: () => Promise<void>;
+    reload: (config?: Record<string, any>) => Promise<void>;
     reset: () => Promise<void>;
 }
 
@@ -133,25 +133,33 @@ export interface useApiToPaginationInstance<T = null> {
 //     return r
 // }
 export function useApiToPagination<T extends Record<string, any>, R extends Record<string, any>, K extends keyof T>(request: (...args: any) => Promise<R>, config: Pagination & Record<string, any>, key: K, afterFn?: (data: R) => T[]): useApiToPaginationInstance<Map<T[K], T>> {
-    type ListInstance = Map<T[K], T>
-    const newConifg: Pagination = JSON.parse(JSON.stringify(config));
+    type ListInstance = Map<T[K], T>;
+    const sourceConfig = JSON.parse(JSON.stringify(config));
+    let newConifg: Pagination = sourceConfig
     let resultPromise = request(newConifg);
     const list = ref<ListInstance>(new Map());
     const loadList = async () => {
-        let result = await resultPromise
-        let data: T[] = []
-        if (afterFn) {
-            data = afterFn(result)
-        } else {
-            data = result.data
-        }
-        returnData.status.value = "ready"
-        if (data.length < newConifg.pageSize) returnData.status.value = "end";
-        if (data.length === 0 && newConifg.page === 1) returnData.status.value = "zero";
+        try {
 
-        data.forEach(e => {
-            list.value.set(e[key], e)
-        })
+
+            let result = await resultPromise;
+            console.log(result, "我是result")
+            let data: T[] = []
+            if (afterFn) {
+                data = afterFn(result)
+            } else {
+                data = result.data
+            }
+            returnData.status.value = "ready"
+            if (data.length < newConifg.pageSize) returnData.status.value = "end";
+            if (data.length === 0 && newConifg.page === 1) returnData.status.value = "zero";
+
+            data.forEach(e => {
+                list.value.set(e[key], e)
+            })
+        } catch (error) {
+            console.log("我是error", error)
+        }
     }
     loadList()
     const returnData: useApiToPaginationInstance<ListInstance> = {
@@ -164,8 +172,11 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
             Object.assign(newConifg, config)
             await returnData.reload()
         },
-        async reload() {
-            returnData.status.value = "loading"
+        async reload(config) {
+            returnData.status.value = "loading";
+            newConifg = sourceConfig
+            if (config) Object.assign(newConifg, config);
+            list.value.clear()
             resultPromise = request(newConifg);
             await loadList()
         },
@@ -176,4 +187,10 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
     }
 
     return returnData
-}   
+}
+
+
+export enum DIRECTION {
+    DOWN,
+    UP
+}

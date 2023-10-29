@@ -94,18 +94,27 @@ async function useRequestBody<T extends InstanceBody<any>>(response: Promise<Axi
         return data
 
     } catch (error) {
-        if (error instanceof AxiosError<T> && error.response) {
-            const { status, data } = error.response;
-            if (status !== 200) {
-                let errorMsg = "请求数据失败,请稍后重试"
-                if (!data) {
-                    if (!navigator.onLine) errorMsg = "您似乎已经断开和互联网的连接,请检查本机网络后重试";
-                } else {
-                    errorMsg = data.message
+        console.log(error, "我是错误")
+        if (error instanceof AxiosError<T>) {
+            if (error.response) {
+
+                const { status, data } = error.response;
+                if (status !== 200) {
+                    let errorMsg = "请求数据失败,请稍后重试"
+                    if (!data) {
+                        if (!navigator.onLine) errorMsg = "您似乎已经断开和互联网的连接,请检查本机网络后重试";
+                    } else {
+                        errorMsg = data.message
+                    }
+                    notification.error({ content: errorMsg })
                 }
-                notification.error({ content: errorMsg })
+            } else if (error.message.indexOf("6000ms") !== -1) {
+                console.log("进入这里")
+                notification.error({ title: "网络出错", content: "远程服务器超时" })
             }
+
         }
+
         return new Promise(() => ({
             code: "-9999",
             message: "系统错误",
