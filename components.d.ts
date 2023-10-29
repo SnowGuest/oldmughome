@@ -7,12 +7,27 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Avatar: typeof import('./src/components/user/avatar.vue')['default']
     'Bilibili.ce': typeof import('./src/components/bilibili.ce.vue')['default']
+    I18n: typeof import('./src/components/header/i18n.vue')['default']
+    Item: typeof import('./src/components/article/item.vue')['default']
+    ListStatus: typeof import('./src/components/listStatus.vue')['default']
+    MoblieHeader: typeof import('./src/components/header/moblieHeader.vue')['default']
+    NAvatar: typeof import('naive-ui')['NAvatar']
+    NBackTop: typeof import('naive-ui')['NBackTop']
+    NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NEmpty: typeof import('naive-ui')['NEmpty']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
+    NPopselect: typeof import('naive-ui')['NPopselect']
+    NTab: typeof import('naive-ui')['NTab']
+    NTabs: typeof import('naive-ui')['NTabs']
+    PcHeader: typeof import('./src/components/header/pcHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    UseHeader: typeof import('./src/components/useHeader.vue')['default']
+    Search: typeof import('./src/components/header/search.vue')['default']
+    Tag: typeof import('./src/components/article/tag.vue')['default']
+    UseHeader: typeof import('./src/components/header/useHeader.vue')['default']
   }
 }

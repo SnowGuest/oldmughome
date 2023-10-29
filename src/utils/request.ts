@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import type { AxiosRequestConfig, AxiosResponse } from "axios"
 import { useUserStore } from "@/stores/user";
 import { useMessage, useNotification } from "naive-ui";
@@ -75,18 +75,12 @@ axios.interceptors.request.use((config) => {
 
 
 async function useRequestBody<T extends InstanceBody<any>>(response: Promise<AxiosResponse<T>>, errors: ErrorInstall = ErrorInstance): Promise<T> {
-    const notification = useNotification();
-    const message = useMessage();
+    const notification = window.Nnotification
+    const message = window.Nmessage
     const { resetLogged } = useUserStore()
     try {
         const result = await response;
-        const { data, status, config } = result;
-        if ((status != 200 && data) || data.code !== 0) {
-            let errorMsg = errors[data.code]
-            if (!errorMsg) errorMsg = "请求数据失败,请重试";
-            if (!navigator.onLine) errorMsg = "您似乎已经断开和互联网的连接,请检查本机网络后重试";
-            notification.error({ content: errorMsg })
-        }
+        const { data, config } = result;
         if (data && data.code !== 0) {
             const errorMsg = errors[data.code];
             if (errorMsg) {
@@ -100,6 +94,18 @@ async function useRequestBody<T extends InstanceBody<any>>(response: Promise<Axi
         return data
 
     } catch (error) {
+        if (error instanceof AxiosError<T> && error.response) {
+            const { status, data } = error.response;
+            if (status !== 200) {
+                let errorMsg = "请求数据失败,请稍后重试"
+                if (!data) {
+                    if (!navigator.onLine) errorMsg = "您似乎已经断开和互联网的连接,请检查本机网络后重试";
+                } else {
+                    errorMsg = data.message
+                }
+                notification.error({ content: errorMsg })
+            }
+        }
         return new Promise(() => ({
             code: "-9999",
             message: "系统错误",

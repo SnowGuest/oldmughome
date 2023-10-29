@@ -1,12 +1,25 @@
 {
-    "component": {
-        "header": {
-            "frontPage": "frontPage"
-        }
-    },
     "pages": {
         "login": {
             "loginButton": "login"
+        }
+    },
+    "component": {
+        "header": {
+            "frontPage": "frontPage",
+            "menu": [
+                "Home",
+                "Categories",
+                "MONF2023",
+                "BOF2023"
+            ],
+            "searchPlaceholder": "Enter and press Enter to search."
+        },
+        "i18n": {
+            "options": [
+                "English",
+                "Chinese"
+            ]
         }
     }
 }

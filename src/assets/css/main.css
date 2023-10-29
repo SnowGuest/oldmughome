@@ -1,0 +1,30 @@
+@import './base.css';
+
+:root {
+    --mug-bg: #F3F4F4;
+    --mug-card-bg: #FFFFFF;
+    --mug-card-sub-bg: #ededed;
+
+    --mug-tag-bg: #f2f2f2;
+    --mug-tag-Text: rgba(0, 0, 0, .65);
+    --mug-text: #212121;
+    --mug-sub-text: rgba(14, 21, 28, 0.6);
+    --mug-card-text: var(--mug-text);
+    --mug-tag-line: #f1f1f1;
+    --mug-header-bg: #FFFFFF;
+    --mug-dividing: rgba(14, 21, 28, 0.1);
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}

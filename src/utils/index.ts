@@ -1,13 +1,10 @@
-import type { Article } from "@/api/post";
-import type { LoginBody, User } from "@/api/user";
+import type { Article, Pagination } from "@/api/post";
+import type { User } from "@/api/user";
 import { reactive } from "vue-demi"
-import type { UploadFileInfo } from 'naive-ui'
+import { type UploadFileInfo } from 'naive-ui'
 
 import { uploaderFile } from "@/api/file";
-import { defineCustomElement } from "vue";
-import Bilibili from '../components/bilibili.ce.vue'
-import { useUserStore } from "@/stores/user";
-
+import { type Ref, ref } from "vue";
 export function getUserMap(user: User[] = [], userMap?: Map<number, User>) {
     const users = userMap || reactive<Map<number, User>>(new Map<number, User>());
     user.forEach(e => {
@@ -100,9 +97,9 @@ export async function getUploadAction(files: UploadFileInfo[]) {
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (!file.file) return [];
-        const { data } = await uploaderFile(file.file);
-        if (!data.value || data.value.code !== 0) return [];
-        urls.push(data.value.data.UploadFileUrl)
+        const data = await uploaderFile(file.file);
+        if (!data || data.code !== 0) return [];
+        urls.push(data.data.UploadFileUrl)
     }
     return urls
 }
@@ -115,43 +112,68 @@ export function delay(time: number) {
 
 
 
+export interface useApiToPaginationInstance<T = null> {
+    status: Ref<"loading" | "netword" | "end" | "ready" | "zero" | "error">;
+    list: Ref<T>;
+    next: (page?: number, config?: Record<string, any>) => Promise<void>;
+    reload: () => Promise<void>;
+    reset: () => Promise<void>;
+}
 
-export function useAppload() {
-    const { setLogged, resetLogged } = useUserStore()
-    const BilibiliElement = defineCustomElement(Bilibili)
-    // 注册
-    customElements.define('mug-bilibili', BilibiliElement)
-    const userInfoJSON = localStorage.getItem("MUG_USER_INFO");
-    if (userInfoJSON) {
-        try {
-            const parseUserInfo = (userInfoJSON: string) => {
-                const userInfo: LoginBody = JSON.parse(userInfoJSON);
-                if (userInfo) {
-                    const start = Date.now();
-                    const end = parseInt(`${userInfo.token.exp}000`)
-                    if (start > end || !userInfo.token || !userInfo.user) {
-                        throw new Error("登录信息已过期")
-                    } else {
-                        setLogged(userInfo)
-                    }
+// export function getDefaultPInstance<V extends Record<string, any>, K extends keyof V>() {
+//     type ListInstance = Map<V[K], V>
+//     const list = ref<ListInstance>(new Map());
+//     const r: useApiToPaginationInstance<ListInstance> = {
+//         status: ref("loading"),
+//         list,
+//         next: async () => { },
+//         reload: async () => { },
+//         reset: async () => { }
+//     }
+//     return r
+// }
+export function useApiToPagination<T extends Record<string, any>, R extends Record<string, any>, K extends keyof T>(request: (...args: any) => Promise<R>, config: Pagination & Record<string, any>, key: K, afterFn?: (data: R) => T[]): useApiToPaginationInstance<Map<T[K], T>> {
+    type ListInstance = Map<T[K], T>
+    const newConifg: Pagination = JSON.parse(JSON.stringify(config));
+    let resultPromise = request(newConifg);
+    const list = ref<ListInstance>(new Map());
+    const loadList = async () => {
+        let result = await resultPromise
+        let data: T[] = []
+        if (afterFn) {
+            data = afterFn(result)
+        } else {
+            data = result.data
+        }
+        returnData.status.value = "ready"
+        if (data.length < newConifg.pageSize) returnData.status.value = "end";
+        if (data.length === 0 && newConifg.page === 1) returnData.status.value = "zero";
 
-                }
-            }
-            parseUserInfo(userInfoJSON)
-            window.addEventListener('storage', ({ key, newValue }) => {
-                if (key === 'MUG_USER_INFO') {
-                    if (newValue) {
-                        parseUserInfo(newValue)
-                    } else {
-                        resetLogged()
-                    }
-                }
-            })
-        } catch (error) {
-            if (error instanceof Error) {
-                localStorage.clear();
-                resetLogged()
-            }
+        data.forEach(e => {
+            list.value.set(e[key], e)
+        })
+    }
+    loadList()
+    const returnData: useApiToPaginationInstance<ListInstance> = {
+        status: ref("loading"),
+        list,
+        async next(page, config) {
+            if (returnData.status.value !== "ready") return;
+            if (page) { newConifg.page = page; }
+            else newConifg.page = parseInt(`${newConifg.page}`) + 1;
+            Object.assign(newConifg, config)
+            await returnData.reload()
+        },
+        async reload() {
+            returnData.status.value = "loading"
+            resultPromise = request(newConifg);
+            await loadList()
+        },
+        async reset() {
+            list.value.clear()
+            await returnData.next(0);
         }
     }
-}
+
+    return returnData
+}   

@@ -6,7 +6,20 @@
     },
     "component": {
         "header": {
-            "frontPage": "首页"
+            "frontPage": "首页",
+            "menu": [
+                "首页",
+                "分区",
+                "MONF2023",
+                "BOF2023"
+            ],
+            "searchPlaceholder": "输入后回车搜索。"
+        },
+        "i18n": {
+            "options": [
+                "英语",
+                "中文"
+            ]
         }
     }
 }

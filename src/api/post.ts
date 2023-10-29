@@ -31,24 +31,26 @@ export interface ArticlesBody {
     };
     post: Article[];
 }
-export interface ArticleParams {
+
+export interface Pagination {
+    page: string | number;
+    pageSize: string | number;
+}
+export interface ArticleParams extends Pagination {
     userid?: number | string;
     sort?: string | number;
-    page?: string | number;
     categorieId?: string | number;
-    pagesize?: string | number;
 }
 
 /**
  * @GET 帖子列表
- * @param userid 用户Id
- * @param sort 排序规则
- * @param page 第几页
- * @param categorieId 分区id
- * @param pagesize 本页多少条
+ * @param params.userid 用户Id
+ * @param params.sort 排序规则
+ * @param params.page 第几页
+ * @param params.categorieId 分区id
+ * @param params.pagesize 本页多少条
  * */
 export async function getArticleList(
-    
     params: ArticleParams,
     opt: ErrorInstall = {
         FetchError: "获取帖子信息失败",
@@ -59,7 +61,7 @@ export async function getArticleList(
         {
             method: "GET",
             params,
-           
+
         },
         opt
     );
@@ -148,11 +150,11 @@ export interface GetArticleParams {
  * @GET 帖子详情
  * @param id 帖子Id
  * */
-export function getArticle( params: GetArticleParams) {
+export function getArticle(params: GetArticleParams) {
     const { page, sortField, pageSize, sortType } = params;
     return request<ArticleBody>(`post/${params.id}`, {
         method: "GET",
-       
+
         params: { page, sortField, pageSize, sortType },
     });
 }
@@ -222,12 +224,12 @@ export function updateArticle(data: updateArticleParams) {
  * @POST 点赞
  * @param id 帖子id
  * */
-export function like( id: Article["id"], cancel?: boolean) {
+export function like(id: Article["id"], cancel?: boolean) {
     return request<null>(
         `like/post/${id}`,
         {
             method: "GET",
-           
+
             params: { cancel },
         },
         {}
@@ -238,10 +240,11 @@ export function like( id: Article["id"], cancel?: boolean) {
  * @POST 关注
  * @param id 用户Id
  * */
-export function attentionUser(key:string,id: string|number) {
+export function attentionUser(id: string | number) {
     return request<ArticleBody>(`user/follow/${id}`, {
         method: "get",
-       
+    }, {
+        0: "关注成功"
     });
 }
 

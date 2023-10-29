@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, provide, reactive, watch } from 'vue';
-import { zhCN, enUS, dateZhCN, dateEnUS } from 'naive-ui';
-import { useAppload } from './utils';
+import { zhCN, enUS, dateZhCN, dateEnUS, useMessage, useNotification } from 'naive-ui';
+import { useAppload, useApploadData } from './utils/useAppload';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
-import useHeader from "@/components/useHeader.vue"
 export interface App {
     locale: "zh-cn" | "en-us";
     setLocale: (locale: App["locale"]) => void;
 }
+
 const setting = reactive<App>({
     locale: "zh-cn",
     setLocale(locale) {
@@ -23,14 +23,22 @@ const locale = computed(() => setting.locale === "zh-cn" ? zhCN : enUS)
 const dateLocale = computed(() => setting.locale === "zh-cn" ? dateZhCN : dateEnUS);
 
 provide("app", setting);
-useAppload()
+useApploadData()
+// #F5A91D
+const themeOverrides = {
+    common: {
+      primaryColor: '#FF0000'
+    },
+   
+  }
 </script>
 
 <template>
-    <n-config-provider abstract :locale="locale" :date-locale="dateLocale">
+    <n-config-provider :theme-overrides="themeOverrides" abstract :locale="locale" :date-locale="dateLocale">
         <n-notification-provider>
             <n-message-provider>
-                <useHeader />
+                <useAppload />
+                <RouterView />
             </n-message-provider>
         </n-notification-provider>
     </n-config-provider>

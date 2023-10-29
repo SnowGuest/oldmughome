@@ -12,3 +12,10 @@ export function getBanners() {
         method: "GET",
     })
 }
+
+
+export function getBannersssss() {
+    return request<BannerBody>("/demodmeode", {
+        method: "GET",
+    })
+}

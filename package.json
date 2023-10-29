@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
   "dependencies": {
+    "@unhead/vue": "^1.8.0",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
     "axios": "^1.6.0",
@@ -32,6 +33,7 @@
     "naive-ui": "^2.35.0",
     "npm-run-all2": "^6.1.1",
     "typescript": "~5.2.0",
+    "unocss": "^0.57.1",
     "unplugin-auto-import": "^0.16.7",
     "unplugin-vue-components": "^0.25.2",
     "vfonts": "^0.0.3",
