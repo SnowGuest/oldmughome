@@ -33,7 +33,7 @@ import { InstanceBody } from '@/utils/request';
 import { ref } from 'vue';
 import { useRoute } from "vue-router"
 import ArticleVue from "@/components/article/item.vue";
-import ScrollView from '@/components/scrollview/scrollview.vue';
+import ScrollView from '@/components/scrollview/scrollView.vue';
 import ListStatus from '@/components/listStatus.vue';
 
 const tabs = ["帖子", "用户"]

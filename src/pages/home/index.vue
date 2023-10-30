@@ -46,7 +46,7 @@ import { useHead } from '@unhead/vue'
 import { NCarousel } from "naive-ui"
 import ArticleVue from "@/components/article/item.vue";
 // import SideBar from '@/components/SideBar/index.vue';
-import ScrollView from "@/components/scrollview/scrollview.vue"
+import ScrollView from "@/components/scrollview/scrollView.vue"
 import { Article, ArticlesBody, getArticleList } from '@/api/post';
 
 import { Categorie } from '@/api/categorie';

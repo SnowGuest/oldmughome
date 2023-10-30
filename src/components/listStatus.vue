@@ -1,5 +1,6 @@
 <template>
-    <n-empty v-show="status === 'zero'" description="没有数据,看看别的吧" />
+    
+    <n-empty style="padding:20vh 0" v-show="status === 'zero'" description="没有数据,看看别的吧" />
 
     <div v-show="['loading', 'ready'].includes(status)" class="commonBody ">
         <img class="loadingIcon" src="@/assets/icon/loading.svg" alt="">

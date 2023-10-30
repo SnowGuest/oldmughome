@@ -1,63 +1,65 @@
 <template>
     <!-- <List v-model:loading="status.loading" :finished="status.finished" :immediate-check="false" @load="load_comment"> -->
-    <ul>
-        <li v-for="[id, item] in comments" class="comment" v-show="!item.isHidden" :key="item.id">
-            <NuxtLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
-                <Image round width="50" height="50" :src="getUser(item.createdUserId)?.avatarUrl">
-                </Image>
-            </NuxtLink>
-            <div class="commentBody">
-                <div class="flex items-center justify-between">
-                    <NuxtLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`">
-                        <h4 class="nickName">{{ getUser(item.createdUserId)?.nickName }}</h4>
-                        <h5 class="desu">{{ getUser(item.createdUserId)?.bio }}</h5>
-                    </NuxtLink>
-                    <div class="justify-center flex items-center commentLike" @click="likeComment(item)">
-                        <span class="likeCount">{{ item.likeCount }}</span>
-                        <Icon :class="{ isLiked: item.relations?.isLiked }"
-                            :name="item.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+    <ScrollView>
+        <ul>
+            <li v-for="[id, item] in comments" class="comment" v-show="!item.isHidden" :key="item.id">
+                <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
+                    <n-image round size="50" :src="getUser(item.createdUserId)?.avatarUrl">
+                    </n-image>
+                </RouterLink>
+                <div class="commentBody">
+                    <div class="flex items-center justify-between">
+                        <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`">
+                            <h4 class="nickName">{{ getUser(item.createdUserId)?.nickName }}</h4>
+                            <h5 class="desu">{{ getUser(item.createdUserId)?.bio }}</h5>
+                        </RouterLink>
+                        <div class="justify-center flex items-center commentLike" @click="likeComment(item)">
+                            <span class="likeCount">{{ item.likeCount }}</span>
+                            <Icon :class="{ isLiked: item.relations?.isLiked }"
+                                :name="item.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                        </div>
                     </div>
-                </div>
 
 
 
-                <div class="commentContent">{{ item.content }}</div>
+                    <div class="commentContent">{{ item.content }}</div>
 
-                <div class="commentControl items-center" :id="`commentControl${item.id}`">
-                    <time class="time">发布于 {{ getCreateTime(item.createdDate) }}</time>
-                    <span @click="tapBack(item)" class="commentBack">回复</span>
-                </div>
-                <ul>
-                    <li v-for="child in item.children" :key="child.id" class="commentChildBody">
-                        <NuxtLink class="items-center" target="_blank" :to="`/account/${getUser(child.createdUserId)?.id}`"
-                            style="min-width: 30px;">
-                            <Image round width="30" height="30" :src="getUser(child.createdUserId)?.avatarUrl">
-                            </Image>
-                        </NuxtLink>
-                        <div style="flex:1">
-                            <div class="items-center justify-between">
-                                <NuxtLink target="_blank" :to="`/account/${getUser(child.createdUserId)?.id}`">
-                                    <h4 class="nickName-child">{{ getUser(child.createdUserId)?.nickName }}</h4>
-                                </NuxtLink>
-                                <div class="justify-center flex items-center commentLike" @click="likeComment(child)">
-                                    <span class="likeCount">{{ child.likeCount }}</span>
-                                    <Icon :class="{ isLiked: child.relations?.isLiked }"
-                                        :name="child.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                    <div class="commentControl flex items-center" :id="`commentControl${item.id}`">
+                        <time class="time">发布于 {{ getCreateTime(item.createdDate) }}</time>
+                        <span @click="tapBack(item)" class="commentBack">回复</span>
+                    </div>
+                    <ul>
+                        <li v-for="child in item.children" :key="child.id" class="commentChildBody">
+                            <RouterLink class="flex items-center" target="_blank"
+                                :to="`/account/${getUser(child.createdUserId)?.id}`" style="min-width: 30px;">
+                                <n-image round size="30" :src="getUser(child.createdUserId)?.avatarUrl">
+                                </n-image>
+                            </RouterLink>
+                            <div style="flex:1">
+                                <div class="flex items-center justify-between">
+                                    <RouterLink target="_blank" :to="`/account/${getUser(child.createdUserId)?.id}`">
+                                        <h4 class="nickName-child">{{ getUser(child.createdUserId)?.nickName }}</h4>
+                                    </RouterLink>
+                                    <div class="justify-center flex items-center commentLike" @click="likeComment(child)">
+                                        <span class="likeCount">{{ child.likeCount }}</span>
+                                        <Icon :class="{ isLiked: child.relations?.isLiked }"
+                                            :name="child.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                                    </div>
+                                </div>
+                                <div class="commentContent">{{ child.content }}</div>
+                                <div class="commentControl commentControlChild items-center">
+                                    <time class="time">发布于 {{ getCreateTime(child.createdDate) }}</time>
+                                    <!-- <span @click="tapBack(child)" class="commentBack">回复</span> -->
                                 </div>
                             </div>
-                            <div class="commentContent">{{ child.content }}</div>
-                            <div class="commentControl commentControlChild items-center">
-                                <time class="time">发布于 {{ getCreateTime(child.createdDate) }}</time>
-                                <!-- <span @click="tapBack(child)" class="commentBack">回复</span> -->
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                        </li>
+                    </ul>
+                </div>
 
-        </li>
+            </li>
 
-    </ul>
+        </ul>
+    </ScrollView>
     <!-- <template #finished>
             <Empty v-if="comments.size <= 0" description="暂无评论" />
             <span v-else="comments.size > 0">没有更多了</span>
@@ -75,12 +77,14 @@
 
 <script lang="tsx" setup >
 import dayjs from "dayjs";
-import { Image, Empty, showSuccessToast, showFailToast } from "vant"
+// import { Image, Empty, showSuccessToast, showFailToast } from "vant"
 import { commentLike } from "@/api/comment";
 import { Comment, MonfVoteDetail } from '@/api/post';
 import { User } from '@/api/user';
-import { List } from "vant"
-import { CommentStatus } from "@/pages/article/[id].vue";
+// import { List } from "vant"
+import { CommentStatus } from "@/pages/article/index.vue";
+import ScrollView from "../scrollview/scrollView.vue";
+import { useMessage } from "naive-ui";
 
 interface Prop {
     users?: Map<number, User>;
@@ -112,25 +116,19 @@ const emit = defineEmits<Emit>()
 function tapBack(e: Comment) {
     emit("comment", e)
 }
+const message = useMessage()
 
 
 async function likeComment(comment: Comment) {
-    try {
-        let isLike = comment.relations?.isLiked;
-        if (isLike === false) isLike = undefined;
-        const { data, error, refresh, execute } = await commentLike(`index/like/${comment.id}`, comment.id, isLike);
-        if (data.value?.code === 0) {
-            const sum = isLike ? -1 : 1;
-            if (!comment.relations) comment.relations = {}
-            comment.relations.isLiked = !isLike
-            showSuccessToast(isLike ? "取消点赞" : "点赞成功");
-            comment.likeCount += sum
-        }
-
-    } catch (error) {
-        if (error instanceof Error) {
-            showFailToast(error.message)
-        }
+    let isLike = comment.relations?.isLiked;
+    if (isLike === false) isLike = undefined;
+    const { code } = await commentLike(comment.id, isLike);
+    if (code === 0) {
+        const sum = isLike ? -1 : 1;
+        if (!comment.relations) comment.relations = {}
+        comment.relations.isLiked = !isLike;
+        message.success(isLike ? "取消点赞" : "点赞成功");
+        comment.likeCount += sum
     }
 }
 

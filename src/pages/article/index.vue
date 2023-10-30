@@ -1,116 +1,120 @@
 <template>
-    <div class="mainPage">
-        <div class="card flex column" id="card">
-            <div class="flex items-center">
-                <Image v-if="user?.avatarUrl" round :src="user?.avatarUrl" width="62" height="62" alt="头像" />
-                <div v-else class="userHeader" :style="`background-color:${getColor()}`">
-                    {{ user?.nickName[0] }}
-                </div>
-                <div class="justify-center items-center flex">
-                    <div class="nickName flex column">
-                        <span>{{ user?.nickName }}</span>
-                        <time class="createTime"> 发布于 {{ createTime }}</time>
-                        <!-- <span style="margin-top:4px">{{ user?.role }}</span> -->
-                    </div>
-                </div>
-                <div class="attention">
-                    <Button v-if="!user?.relations?.isSubscribed" type="primary" round :loading="followLoading"
-                        @click="followUser(user)">关注</Button>
-                    <Button v-else round :loading="followLoading" @click="unfollowUser(user)">取消关注</Button>
-                </div>
-            </div>
-            <h2 class="title">{{ article?.title }}</h2>
-            <MdPreview @get-catalog="showCatalog = Array.isArray($event) && $event.length > 0" :editorId="markDownState.id"
-                :theme="appInstance?.theme" class="articleContent" :model-value="article?.content" preview preview-only />
-            <ArticleTag />
-            <div class="lockUser " id="comments" ref="commentsDom">{{ article?.viewCount }}人浏览
-                <Popover :actions="actions">
-                    <template #reference>
-                        <Icon name="ci:more-horizontal" class="moreMenu" />
-                    </template>
-                </Popover>
-            </div>
-            <div class="likeUsers flex justify-center items-center flex column" v-show="article && likeUsers.size > 0">
-                <span>{{ article?.likeCount }}人表示很赞</span>
-                <ul class="likeUsersElement">
-                    <li v-for="[id, item] in likeUsers">
-                        <Image round :src="users.get(id)?.avatarUrl" width="32" height="32" alt="头像"></Image>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="commentCard flex column">
-            <div class="flex justify-between commentCard_header">
-                <h3>全部评论</h3>
-                <ol class="selectComment">
-                    <li @click="setCommentType(ArticleSortField.LikeCount)"
-                        :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.LikeCount }">热门</li>
-                    <li class="diviving"></li>
-                    <li @click="setCommentType(ArticleSortField.createdDate)"
-                        :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.createdDate }">时间</li>
-                </ol>
-            </div>
-            <comment v-model:status="commentStatus" @comment="ShowModel" :next="nextComment" :users="users"
-                :comments="comments" :scores="scores" />
-        </div>
-        <aside class="cardFooter flex items-center">
-            <div class="openInput " @click="ShowModel(article?.id, false)">说点什么吧~</div>
-            <div class="flex justify-between column commentIconBox" @click="ShowModel(article?.id, false)">
-                <Icon name="ci:message-writing" />
-                <div class="iconSum">{{ comments.size }}</div>
-            </div>
-            <div class="flex justify-between column likeIconBox" @click="like_this">
-                <Icon :class="{ isliked: article?.relations.isLiked }"
-                    :name="article?.relations.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
-                <div class="iconSum">{{ article?.likeCount }}</div>
-            </div>
-        </aside>
-    </div>
-    <SideBar :tag="false" :check="false">
-        <div class="newcard ">
-            <div class="newCardUserBg">
-                <background :src="user?.userCoverUrl" />
-            </div>
-            <div class="newcardBody column flex justify-center items-center">
+    <ScrollView>
+        <div class="mainPage">
+            <div class="card flex column" id="card">
                 <div class="flex items-center">
-                    <NuxtLink target="_blank" :to="`/account/${user?.id}`">
-                        <Image round :src="user?.avatarUrl" width="62" height="62" alt="头像" />
-                    </NuxtLink>
-                    <div class="newcardBodyRight">
-                        <h5>{{ user?.nickName }}</h5>
-                        <span class="bio">{{ user?.bio || "这位用户没有简介哦~" }}</span>
+                    <n-image v-if="user?.avatarUrl" round :src="user?.avatarUrl" size="62" alt="头像" />
+                    <div v-else class="userHeader" :style="`background-color:${getColor()}`">
+                        {{ user?.nickName[0] }}
+                    </div>
+                    <div class="justify-center items-center flex">
+                        <div class="nickName flex column">
+                            <span>{{ user?.nickName }}</span>
+                            <time class="createTime"> 发布于 {{ createTime }}</time>
+                            <!-- <span style="margin-top:4px">{{ user?.role }}</span> -->
+                        </div>
+                    </div>
+                    <div class="attention">
+                        <n-button v-if="!user?.relations?.isSubscribed" type="primary" round :loading="followLoading"
+                            @click="followUser(user)">关注</n-button>
+                        <n-button v-else round :loading="followLoading" @click="unfollowUser(user)">取消关注</n-button>
                     </div>
                 </div>
+                <h2 class="title">{{ article?.title }}</h2>
+                <MdPreview @get-catalog="showCatalog = Array.isArray($event) && $event.length > 0"
+                    :editorId="markDownState.id" :theme="appInstance?.theme" class="articleContent"
+                    :model-value="article?.content" preview preview-only />
+                <ArticleTag />
+                <div class="lockUser " id="comments" ref="commentsDom">{{ article?.viewCount }}人浏览
+                    <Popover :actions="actions">
+                        <template #reference>
+                            <Icon name="ci:more-horizontal" class="moreMenu" />
+                        </template>
+                    </Popover>
+                </div>
+                <div class="likeUsers flex justify-center items-center flex column" v-show="article && likeUsers.size > 0">
+                    <span>{{ article?.likeCount }}人表示很赞</span>
+                    <ul class="likeUsersElement">
+                        <li v-for="[id, item] in likeUsers">
+                            <n-image round :src="users.get(id)?.avatarUrl" size="32" alt="头像"></n-image>
+                        </li>
+                    </ul>
+                </div>
 
-                <ul class="flex items-center userDetali">
-                    <li class="column flex justify-center items-center">
-                        <span class="sum">{{ user?.postCount || 0 }}</span>
-                        <span class="sumText">帖子</span>
-                    </li>
-                    <li class="column flex justify-center items-center">
-                        <span class="sum"> {{ user?.followerCount || 0 }}</span>
-                        <span class="sumText">粉丝</span>
-                    </li>
-                </ul>
-
-                <div class="userSub">已注册{{ userJoinDay }}天</div>
             </div>
+
+            <div class="commentCard flex column">
+                <div class="flex justify-between commentCard_header">
+                    <h3>全部评论</h3>
+                    <ol class="selectComment">
+                        <li @click="setCommentType(ArticleSortField.LikeCount)"
+                            :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.LikeCount }">热门</li>
+                        <li class="diviving"></li>
+                        <li @click="setCommentType(ArticleSortField.createdDate)"
+                            :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.createdDate }">时间</li>
+                    </ol>
+                </div>
+                <comment v-model:status="commentStatus" @comment="ShowModel" :next="nextComment" :users="users"
+                    :comments="comments" :scores="scores" />
+            </div>
+            <aside class="cardFooter flex items-center">
+                <div class="openInput " @click="ShowModel(article?.id, false)">说点什么吧~</div>
+                <div class="flex justify-between column commentIconBox" @click="ShowModel(article?.id, false)">
+                    <Icon name="ci:message-writing" />
+                    <div class="iconSum">{{ comments.size }}</div>
+                </div>
+                <div class="flex justify-between column likeIconBox" @click="like_this">
+                    <Icon :class="{ isliked: article?.relations.isLiked }"
+                        :name="article?.relations.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                    <div class="iconSum">{{ article?.likeCount }}</div>
+                </div>
+            </aside>
         </div>
+        <SideBar :tag="false" :check="false">
+            <div class="newcard ">
+                <div class="newCardUserBg">
+                    <background :src="user?.userCoverUrl" />
+                </div>
+                <div class="newcardBody column flex justify-center items-center">
+                    <div class="flex items-center">
+                        <NuxtLink target="_blank" :to="`/account/${user?.id}`">
+                            <n-image round :src="user?.avatarUrl" size="62" alt="头像" />
+                        </NuxtLink>
+                        <div class="newcardBodyRight">
+                            <h5>{{ user?.nickName }}</h5>
+                            <span class="bio">{{ user?.bio || "这位用户没有简介哦~" }}</span>
+                        </div>
+                    </div>
+
+                    <ul class="flex items-center userDetali">
+                        <li class="column flex justify-center items-center">
+                            <span class="sum">{{ user?.postCount || 0 }}</span>
+                            <span class="sumText">帖子</span>
+                        </li>
+                        <li class="column flex justify-center items-center">
+                            <span class="sum"> {{ user?.followerCount || 0 }}</span>
+                            <span class="sumText">粉丝</span>
+                        </li>
+                    </ul>
+
+                    <div class="userSub">已注册{{ userJoinDay }}天</div>
+                </div>
+            </div>
 
 
-        <div class="newcard" style="padding:16px" v-if="showCatalog">
-            <h3>目录</h3>
-            <MdCatalog class="postCatalog" :editorId="markDownState.id" scrollElement="#pageBody" />
-        </div>
-    </SideBar>
-    <ShowComment :showVote="showVote" :is-vote="isVote" @success="commentSuccess" :post-id="selectComment.postId"
-        :comment-id="selectComment.id" v-model:show="selectComment.show" />
+            <div class="newcard" style="padding:16px" v-if="showCatalog">
+                <h3>目录</h3>
+                <MdCatalog class="postCatalog" :editorId="markDownState.id" scrollElement="#pageBody" />
+            </div>
+        </SideBar>
+        <ShowComment :showVote="showVote" :is-vote="isVote" @success="commentSuccess" :post-id="selectComment.postId"
+            :comment-id="selectComment.id" v-model:show="selectComment.show" />
+    </ScrollView>
 </template>
 
 <script lang="ts" setup>
-import { NButton } from "naive-ui"
+import ScrollView from '@/components/scrollview/scrollView.vue';
+// import { NButton } from "naive-ui"
 import background from '@/components/background.vue';
 import { MdPreview, MdEditor, MdCatalog } from 'md-editor-v3';
 import ArticleTag from '@/components/article/tag.vue';
@@ -125,6 +129,11 @@ import ShowComment from '@/components/article/showComment.vue';
 import { useUserStore } from '@/stores/user';
 import { APP } from "@/app.vue";
 import { init, getArticleInfo } from "@/components/article/preload"
+import { computed, inject, onMounted, provide, ref } from 'vue';
+import { useMessage } from 'naive-ui';
+import { getUserMap } from '@/utils';
+import { useHead } from '@unhead/vue';
+import { useRoute } from 'vue-router';
 export interface CommentStatus {
     finished: boolean,
     loading: boolean,
@@ -132,7 +141,7 @@ export interface CommentStatus {
 export interface ArticlePageAPI {
     setMoveDetali: (id: number, value: MonfVoteDetail) => void
 }
-
+const message = useMessage()
 
 
 const showVote = ref(false)
@@ -151,22 +160,20 @@ const { logged } = storeToRefs(useUserStore())
 const route = useRoute();
 const id = typeof route.params.id === "string" ? route.params.id : null;
 if (!id) throw new Error("此帖子不存在或已被删除");
-const data = await init(id)
+const data = init(id)
 const { article,
     scores,
     searchParams,
     selectComment,
     markDownState,
     likeUsers,
-    myMonfVote,
     comments,
     isVote,
     userJoinDay,
-    commentEnd,
     user,
     users,
-    monfVoteInfo,
-    commentStatus } = data;
+    articlePagination,
+} = data;
 // const searchParams = reactive<GetArticleParams>({
 //     sortField: ArticleSortField.createdDate,
 //     sortType: "desc",
@@ -179,42 +186,32 @@ const { article,
 //     loading: false,
 // })
 async function setCommentType(e: ArticleSortField) {
-    try {
-        if (!id) return;
-        const page = searchParams.page
-        const pageSize = searchParams.pageSize
-        searchParams.page = 1
-        searchParams.pageSize = comments.value.size;
-        searchParams.sortField = e;
-        commentStatus.finished = false;
-        commentStatus.loading = true;
-        comments.value.clear()
-        const result = await getArticleInfo(id, searchParams, users, "article/info/checkAction");
-        commentStatus.finished = typeof result?.commentEnd === "boolean" ? result?.commentEnd : false;
-
-        searchParams.page = page
-        searchParams.pageSize = pageSize
-    } finally {
-        commentStatus.loading = false;
-    }
-
+    if (!id) return;
+    searchParams.sortField = e;
+    comments.value.clear()
+    getArticleInfo(id, searchParams, users);
 }
 const actions: any[] = [];// [{ text: "举报" }]
 
 async function nextComment() {
-    try {
-        if (!id) return;
-        if (!searchParams.page) return
-        searchParams.page++;
-        commentStatus.loading = true
-        const result = await getArticleInfo(id, searchParams, users, "article/comment/next");
-        if (result?.scores) scores.value = result.scores.value
-        commentStatus.loading = true
-        commentStatus.finished = typeof result?.commentEnd === "boolean" ? result?.commentEnd : false
-    } finally {
-        commentStatus.loading = false
-    }
+    if (!id) return;
+    if (!searchParams.page) return
+    searchParams.page++;
+    const result = getArticleInfo(id, searchParams, users);
+    if (result?.scores) scores.value = result.scores.value
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 /*  异步渲染定位逻辑 */
 onMounted(() => {
@@ -240,11 +237,10 @@ useHead({
 async function followUser(user?: User | null) {
     if (!user || followLoading.value) return;
     followLoading.value = true
-
     try {
-        const { data } = await followUserApi(`/article/followUser/${user.id}`, user.id)
-        if (data.value?.code == 0) {
-            showSuccessToast("关注成功");
+        const { code } = await followUserApi(user.id)
+        if (code == 0) {
+            message.success("关注成功");
             if (!user.relations) user.relations = {}
             user.relations.isSubscribed = true
         }
@@ -258,9 +254,9 @@ async function unfollowUser(user?: User | null) {
     followLoading.value = true
 
     try {
-        const { data } = await unfollowUserApi(`/article/followUser/${user.id}`, user.id)
-        if (data.value?.code == 0) {
-            showSuccessToast("取关成功");
+        const { code } = await unfollowUserApi(user.id)
+        if (code == 0) {
+            message.success("取关成功");
             if (user.relations) user.relations.isSubscribed = false
         }
     } finally {
@@ -269,7 +265,7 @@ async function unfollowUser(user?: User | null) {
 }
 /* 渲染评论框 */
 function ShowModel(e?: Comment | number | string, isShowVote = false) {
-    if (!logged.value.login) { showFailToast("请先登录"); return; }
+    if (!logged.value.login) { message.warning("请先登录"); return; }
     if (!e) return;
     if (typeof e !== "object") {
         selectComment.postId = e
@@ -300,27 +296,22 @@ function commentSuccess(user: User[], comment: Comment, monfDetalis?: MonfVoteDe
 }
 /* 点赞 */
 async function like_this() {
-    try {
-        if (!article.value) return;
-        if (!logged.value.login) {
-            showFailToast("请先登录");
-            return;
-        }
-        let isLike = article.value.relations.isLiked;
-        if (isLike === false) isLike = undefined;
-        const { data, error, refresh, execute } = await like(`article/like/${article.value.id}`, article.value.id, isLike);
-        if (data.value?.code === 0) {
-            const sum = isLike ? -1 : 1
-            showSuccessToast(isLike ? "取消点赞" : "点赞成功");
-            article.value.likeCount += sum;
-            article.value.relations.isLiked = !isLike;
-        }
-
-    } catch (error) {
-        if (error instanceof Error) {
-            showFailToast(error.message)
-        }
+    if (!article.value) return;
+    if (!logged.value.login) {
+        showFailToast("请先登录");
+        return;
     }
+    let isLike = article.value.relations.isLiked;
+    if (isLike === false) isLike = undefined;
+    const { code } = await like(article.value.id, isLike);
+    if (code === 0) {
+        const sum = isLike ? -1 : 1
+        message.success(isLike ? "取消点赞" : "点赞成功");
+        article.value.likeCount += sum;
+        article.value.relations.isLiked = !isLike;
+    }
+
+
 }
 
 provide<ArticlePageAPI>("ArticlePage", {

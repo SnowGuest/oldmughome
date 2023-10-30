@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { NButton } from 'naive-ui';
-import ScrollView from "@/components/scrollview/scrollview.vue"
+import ScrollView from "@/components/scrollview/scrollView.vue"
 import ArticleVue from "@/components/article/item.vue";
 // import SideBar from '@/components/SideBar/index.vue';
 // import { Popover, Icon, type PopoverAction, List } from "vant"
@@ -113,7 +113,7 @@ function onLoadArticle(userMap?: typeof users) {
         })
     });
 }
-const instance = onLoadArticle()
+const instance = onLoadArticle(users)
 const { list: articles } = instance;
 
 </script>

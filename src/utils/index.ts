@@ -116,7 +116,7 @@ export interface useApiToPaginationInstance<T = null> {
     status: Ref<"loading" | "netword" | "end" | "ready" | "zero" | "error">;
     list: Ref<T>;
     next: (page?: number, config?: Record<string, any>) => Promise<void>;
-    reload: (config?: Record<string, any>) => Promise<void>;
+    reload: (config?: Record<string, any>, clear?: boolean) => Promise<void>;
     reset: () => Promise<void>;
 }
 
@@ -170,13 +170,13 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
             if (page) { newConifg.page = page; }
             else newConifg.page = parseInt(`${newConifg.page}`) + 1;
             Object.assign(newConifg, config)
-            await returnData.reload()
+            await returnData.reload(undefined, false)
         },
-        async reload(config) {
+        async reload(config, clear = true) {
             returnData.status.value = "loading";
             newConifg = sourceConfig
             if (config) Object.assign(newConifg, config);
-            list.value.clear()
+            if (clear) list.value.clear()
             resultPromise = request(newConifg);
             await loadList()
         },
