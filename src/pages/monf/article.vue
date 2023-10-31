@@ -155,12 +155,12 @@
 
 <script lang="ts" setup>
 import { NButton, NDataTable, useMessage } from "naive-ui"
-import MonfComment, { MonfCommentAPI } from "@/components/monf/comment.vue"
+import MonfComment, {type  MonfCommentAPI } from "@/components/monf/comment.vue"
 // import { Button, showFailToast, Image } from "vant"
 import { getMonf2023Comment, getMonf2023, monfLike, monfunLike } from '@/api/monf';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
-import { followUserApi, unfollowUserApi, User } from '@/api/user';
+import { followUserApi, unfollowUserApi, type User } from '@/api/user';
 import dayjs from 'dayjs';
 // import { showSuccessToast } from 'vant';
 // import { CommentStatus, SelectComment } from '@/components/article/preload';

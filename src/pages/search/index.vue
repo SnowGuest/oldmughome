@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts" setup>
-import { Categorie } from '@/api/categorie';
-import { Article, ArticlesBody, getArticleList } from '@/api/post';
-import { User } from '@/api/user';
+import type  { Categorie } from '@/api/categorie';
+import { type Article,type  ArticlesBody, getArticleList } from '@/api/post';
+import type{ User } from '@/api/user';
 import { useApiToPagination, getUserMap } from '@/utils';
-import { InstanceBody } from '@/utils/request';
+import type { InstanceBody } from '@/utils/request';
 import { ref } from 'vue';
 import { useRoute } from "vue-router"
 import ArticleVue from "@/components/article/item.vue";

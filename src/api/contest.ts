@@ -1,5 +1,5 @@
-import { ErrorInstall, request } from "@/utils/request";
-import { ArticleParams, ArticlesBody } from "./post";
+import { type ErrorInstall, request } from "@/utils/request";
+import type { ArticleParams, ArticlesBody } from "./post";
 
 /**
  * @GET 帖子列表

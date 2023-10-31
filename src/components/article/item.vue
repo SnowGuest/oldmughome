@@ -56,11 +56,11 @@
 <script lang="ts" setup>
 import type { User } from "@/api/user";
 import ArticleTag from "@/components/article/tag.vue"
-import { Article, attentionUser, like } from "@/api/post";
+import { type Article, attentionUser, like } from "@/api/post";
 import dayjs from "dayjs"
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { Categorie } from "@/api/categorie";
+import type { Categorie } from "@/api/categorie";
 import { ref, computed } from "vue";
 import { useMessage } from "naive-ui"
 const message = useMessage()

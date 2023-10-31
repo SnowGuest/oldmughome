@@ -1,5 +1,5 @@
 import { request } from "@/utils/request"
-import { LoginBody } from "./user"
+import type { LoginBody } from "./user"
 
 export function checkMd5(md5: string,
     t: string,

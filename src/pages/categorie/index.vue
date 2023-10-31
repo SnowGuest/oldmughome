@@ -50,14 +50,14 @@ import ScrollView from "@/components/scrollview/scrollView.vue"
 import ArticleVue from "@/components/article/item.vue";
 // import SideBar from '@/components/SideBar/index.vue';
 // import { Popover, Icon, type PopoverAction, List } from "vant"
-import { Article, ArticlesBody, getArticleList } from '@/api/post';
-import { User } from '@/api/user';
-import { Categorie } from '@/api/categorie';
+import { type Article,type ArticlesBody, getArticleList } from '@/api/post';
+import type { User } from '@/api/user';
+import type { Categorie } from '@/api/categorie';
 import { getUserMap, isColorDarkOrLight, Reg2Rgb, useApiToPagination } from '@/utils';
 import { ref } from 'vue';
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
-import { InstanceBody } from '@/utils/request';
+import { type InstanceBody } from '@/utils/request';
 import ListStatus from '@/components/listStatus.vue';
 
 const users = new Map<User["id"], User>();

@@ -1,8 +1,8 @@
 <template>
-    <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
+    <!-- <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
         <Image round width="50" height="50" :src="getUser(item.createdUserId)?.avatarUrl">
         </Image>
-    </RouterLink>
+    </RouterLink> -->
 </template>
 
 <script lang="ts" setup>

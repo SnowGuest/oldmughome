@@ -55,11 +55,11 @@
 </template> 
 
 <script lang="tsx" setup>
-import { Bof, getBof2023List, getChartsData, getSelectTimeList } from "@/api/bof";
+import {type  Bof, getBof2023List, getChartsData, getSelectTimeList } from "@/api/bof";
 import dayjs from "dayjs";
 // import { Base } from "@/layouts/default.vue";
-import { type DataTableCreateRowProps, NDataTable, NSelect, SelectOption } from "naive-ui";
-import { TableColumn } from "naive-ui/es/data-table/src/interface";
+import { type DataTableCreateRowProps, NDataTable, NSelect,type SelectOption } from "naive-ui";
+import { type TableColumn } from "naive-ui/es/data-table/src/interface";
 import { useRouter } from "vue-router";
 import { watch, nextTick, onMounted, reactive, ref } from "vue";
 import { useHead } from "@unhead/vue";
