@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, CSSProperties } from 'vue';
+import { computed,type CSSProperties } from 'vue';
 
 interface Prop {
     src?: string;

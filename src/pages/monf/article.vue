@@ -162,7 +162,7 @@ import { NButton, NDataTable, useMessage } from "naive-ui"
 import MonfComment, { type MonfCommentAPI } from "@/components/monf/monfComment.vue"
 import userCard from "@/components/userCard.vue"
 
-import { getMonf2023, monfLike, monfunLike, Monf } from '@/api/monf';
+import { getMonf2023, monfLike, monfunLike, type Monf } from '@/api/monf';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { followUserApi, unfollowUserApi, type User } from '@/api/user';

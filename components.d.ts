@@ -23,15 +23,11 @@ declare module 'vue' {
     MonfComment: typeof import('./src/components/monf/monfComment.vue')['default']
     MonfCommentVote: typeof import('./src/components/monf/monfCommentVote.vue')['default']
     MonfShowComment: typeof import('./src/components/monf/monfShowComment.vue')['default']
-    NA: typeof import('naive-ui')['NA']
-    NAratav: typeof import('naive-ui')['NAratav']
-    NAv: typeof import('naive-ui')['NAv']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NBackTop: typeof import('naive-ui')['NBackTop']
     NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NEmpty: typeof import('naive-ui')['NEmpty']
-    NIcon: typeof import('naive-ui')['NIcon']
     NImage: typeof import('naive-ui')['NImage']
     NLoadingBarProvider: typeof import('naive-ui')['NLoadingBarProvider']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
@@ -54,6 +50,5 @@ declare module 'vue' {
     UseHeader: typeof import('./src/components/header/useHeader.vue')['default']
     UseIcon: typeof import('./src/components/useIcon.vue')['default']
     UserCard: typeof import('./src/components/userCard.vue')['default']
-    UserHeader: typeof import('./src/components/comment/userHeader.vue')['default']
   }
 }

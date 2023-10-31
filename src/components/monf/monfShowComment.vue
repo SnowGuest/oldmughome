@@ -61,9 +61,9 @@
 import { NFormItem, NInputNumber, NCheckbox, useMessage } from "naive-ui"
 import * as unicodeEmoji from 'unicode-emoji';
 // import { commentPost } from "@/monf/api/comment";
-import { User } from "@/api/user";
-import { Article, Comment, MonfVoteDetail } from "@/api/post"
-import { monf2023Comment, monf2023CommentParams, monf2023CommentUpdate, MonfComment } from "@/api/monf"
+import type { User } from "@/api/user";
+// import { Article, Comment, MonfVoteDetail } from "@/api/post"
+import { monf2023Comment, type Monf2023CommentParams, monf2023CommentUpdate, type MonfComment } from "@/api/monf"
 import { ref, nextTick } from "vue";
 const checkedChartVote = ref(false)
 const checkedMusicVote = ref(false)
@@ -133,7 +133,7 @@ async function sendComment() {
     loading.value = true;
     try {
         if (!prop.monfId) throw new Error("不存在此帖子")
-        const monfVote: monf2023CommentParams = {
+        const monfVote: Monf2023CommentParams = {
             workId: prop.monfId,
             comment: str,
         };

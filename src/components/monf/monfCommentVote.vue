@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MonfComment, cutOffTicketAPI } from '@/api/monf';
+import { type MonfComment, cutOffTicketAPI } from '@/api/monf';
 
 import { useUserStore } from '@/stores/user';
 import { useMessage } from 'naive-ui';

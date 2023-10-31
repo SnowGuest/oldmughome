@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { User } from '@/api/user';
+import type { User } from '@/api/user';
 
 interface Props {
     user: User | undefined;

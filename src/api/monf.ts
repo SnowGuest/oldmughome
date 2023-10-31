@@ -182,7 +182,7 @@ export function getMonf2023Comment( params: GetArticleParams) {
     );
 }
 
-export interface monf2023CommentParams {
+export interface Monf2023CommentParams {
     workId: number | string,
     comment: string,
     musicScore?: number,
@@ -193,7 +193,7 @@ export interface monf2023CommentParams {
 /**
  * @POST monf2023发布评论
  * */
-export function monf2023Comment( data: monf2023CommentParams) {
+export function monf2023Comment( data: Monf2023CommentParams) {
     return request<Monf2023CommentBody>(
         `/event/monf/comment/publish`,
         {
@@ -211,7 +211,7 @@ export function monf2023Comment( data: monf2023CommentParams) {
 /**
  * @POST monf2023更新评论
  * */
-export function monf2023CommentUpdate(workCommentId: number,  data: monf2023CommentParams) {
+export function monf2023CommentUpdate(workCommentId: number,  data: Monf2023CommentParams) {
     return request<Monf2023CommentBody>(
         `/event/monf/comment/${workCommentId}`,
         {
