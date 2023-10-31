@@ -151,7 +151,7 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
                 data = result.data
             }
             returnData.status.value = "ready"
-            if (data.length < newConifg.pageSize) returnData.status.value = "end";
+            if (data.length < parseInt(`${newConifg.pageSize}`)) returnData.status.value = "end";
             if (data.length === 0 && newConifg.page === 1) returnData.status.value = "zero";
 
             data.forEach(e => {

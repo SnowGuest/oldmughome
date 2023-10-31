@@ -40,7 +40,6 @@ declare module 'vue' {
     PcHeader: typeof import('./src/components/header/pcHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Scrollview: typeof import('./src/components/scrollview/scrollView.vue')['default']
     ScrollView: typeof import('./src/components/scrollview/scrollView.vue')['default']
     Search: typeof import('./src/components/header/search.vue')['default']
     ShowComment: typeof import('./src/components/article/showComment.vue')['default']

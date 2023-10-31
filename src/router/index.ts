@@ -30,10 +30,11 @@ const router = createRouter({
       }, {
         path: "monf/2023",
         component: () => import("@/pages/monf/2023.vue")
-      }, {
-        path: "monf/:id",
-        component: () => import("@/pages/monf/article.vue")
       }
+      // , {
+      //   path: "monf/:id",
+      //   component: () => import("@/pages/monf/article.vue")
+      // }
       ]
     },
 

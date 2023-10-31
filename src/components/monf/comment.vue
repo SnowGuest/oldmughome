@@ -50,16 +50,16 @@
 import ShowComment from "@/components/monf/showComment.vue"
 import CommentVote from "./commentVote.vue"
 import dayjs from "dayjs";
-import { ArticleSortField, GetArticleParams } from '@/api/post';
-import { Monf2023CommentsBody, MonfComment, monfCommentLike, monfunCommentLike } from '@/api/monf';
+import { ArticleSortField, type GetArticleParams } from '@/api/post';
+import { type Monf2023CommentsBody,type  MonfComment, monfCommentLike, monfunCommentLike } from '@/api/monf';
 import { getMonf2023Comment } from "@/api/monf";
-import { User } from "@/api/user";
+import type { User } from "@/api/user";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "@/stores/user";
 import { getUserMap, useApiToPagination } from "@/utils";
 import { ref, reactive } from "vue";
 import { useMessage } from "naive-ui";
-import { InstanceBody } from "@/utils/request";
+import type { InstanceBody } from "@/utils/request";
 export interface MonfCommentAPI {
     show: () => void
 }

@@ -76,9 +76,9 @@
 <script lang="tsx" setup >
 import dayjs from "dayjs";
 import { commentLike } from "@/api/comment";
-import { Comment } from '@/api/post';
-import { User } from '@/api/user';
-import { CommentStatus } from "@/pages/article/index.vue";
+import type { Comment } from '@/api/post';
+import type { User } from '@/api/user';
+import type { CommentStatus } from "@/pages/article/index.vue";
 import { useMessage } from "naive-ui";
 
 interface Prop {

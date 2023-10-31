@@ -118,8 +118,8 @@ import ArticleTag from '@/components/article/tag.vue';
 import SideBar from '@/components/sideBar/index.vue';
 import comment from "@/components/comment/comment.vue"
 import { storeToRefs } from "pinia";
-import { User, followUserApi, unfollowUserApi } from '@/api/user';
-import { type Comment, ArticleSortField, like, MonfVoteDetail, MonfVote } from '@/api/post';
+import {type  User, followUserApi, unfollowUserApi } from '@/api/user';
+import { type Comment, ArticleSortField, like} from '@/api/post';
 import dayjs from 'dayjs';
 import ShowComment from '@/components/article/showComment.vue';
 import { useUserStore } from '@/stores/user';

@@ -26,10 +26,9 @@
 
 <script lang="ts" setup>
 import { useHead } from '@unhead/vue'
-import { Categorie, getCategories } from '@/api/categorie';
+import { type Categorie, getCategories } from '@/api/categorie';
 import SideBar from '@/components/sideBar/index.vue';
 import categorieVue from '@/components/categories/index.vue';
-import { Base } from "@/layouts/index.vue";
 import { inject, ref } from 'vue';
 // const base = inject<Base>("Base");
 const categories = ref<Categorie[]>([])

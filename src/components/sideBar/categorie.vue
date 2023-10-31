@@ -14,7 +14,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Categorie } from '~/api/categorie';
+import type { Categorie } from '@/api/categorie';
+import { ref } from 'vue';
 
 const categories = ref<Categorie[]>([]);
 // async function init() {

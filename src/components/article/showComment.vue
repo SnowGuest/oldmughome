@@ -72,8 +72,8 @@ import { NFormItem, NInputNumber, NCheckbox, useMessage } from "naive-ui"
 // import { Uploader, Popup, Popover, Tab, Tabs, Button, showFailToast, showSuccessToast, UploaderFileListItem } from "vant";
 import * as unicodeEmoji from 'unicode-emoji';
 import { commentPost } from "@/api/comment";
-import { User } from "@/api/user";
-import { Article, Comment, MonfVoteDetail } from "@/api/post"
+import type { User } from "@/api/user";
+import type { Article, Comment, MonfVoteDetail } from "@/api/post"
 import { ref, nextTick } from "vue";
 const checkedChartVote = ref(false)
 const checkedMusicVote = ref(false)

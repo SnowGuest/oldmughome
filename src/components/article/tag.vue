@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { Reg2Rgb } from "@/utils/index"
 
-import { Categorie } from '@/api/categorie';
+import type { Categorie } from '@/api/categorie';
 import { computed } from "vue";
 
 interface Prop {

@@ -37,14 +37,14 @@ import { NCarousel } from "naive-ui"
 import ArticleVue from "@/components/article/item.vue";
 import SideBar from '@/components/sideBar/index.vue';
 import ScrollView from "@/components/scrollview/scrollView.vue"
-import { Article, ArticlesBody, getArticleList } from '@/api/post';
+import {type  Article,type  ArticlesBody, getArticleList } from '@/api/post';
 
-import { Categorie } from '@/api/categorie';
-import { Banner, getBanners } from '@/api';
-import { User } from '@/api/user';
-import { getUserMap, useApiToPagination, useApiToPaginationInstance } from '@/utils';
+import type { Categorie } from '@/api/categorie';
+import {type  Banner, getBanners } from '@/api';
+import type { User } from '@/api/user';
+import { getUserMap, useApiToPagination } from '@/utils';
 import { ref } from 'vue';
-import { InstanceBody } from '@/utils/request';
+import type { InstanceBody } from '@/utils/request';
 import ListStatus from '@/components/listStatus.vue';
 
 const users = new Map<User["id"], User>();

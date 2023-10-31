@@ -95,7 +95,7 @@ async function useRequestBody<T extends InstanceBody<any>>(response: Promise<Axi
 
     } catch (error) {
         console.log(error, "我是错误")
-        if (error instanceof AxiosError<T>) {
+        if (error instanceof AxiosError) {
             if (error.response) {
 
                 const { status, data } = error.response;
