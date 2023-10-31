@@ -15,6 +15,7 @@ declare module 'vue' {
     CheckIn: typeof import('./src/components/sideBar/checkIn.vue')['default']
     Comment: typeof import('./src/components/comment/comment.vue')['default']
     CommentChild: typeof import('./src/components/comment/commentChild.vue')['default']
+    CommentVote: typeof import('./src/components/monf/commentVote.vue')['default']
     DownloadApp: typeof import('./src/components/sideBar/downloadApp.vue')['default']
     I18n: typeof import('./src/components/header/i18n.vue')['default']
     Item: typeof import('./src/components/article/item.vue')['default']

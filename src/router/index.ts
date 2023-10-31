@@ -27,11 +27,13 @@ const router = createRouter({
       }, {
         path: "bof/2023",
         component: () => import("@/pages/bof/2023.vue")
+      }, {
+        path: "monf/2023",
+        component: () => import("@/pages/monf/2023.vue")
+      }, {
+        path: "monf/:id",
+        component: () => import("@/pages/monf/article.vue")
       }
-        // {
-        //   path: "monf2023",
-        //   component
-        // }
       ]
     },
 

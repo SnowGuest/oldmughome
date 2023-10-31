@@ -194,17 +194,6 @@ async function loadCharts() {
                 }
             },
             tooltip: {
-                style: {
-                    panel: {
-                        // padding: [0, 0, 0, 0]
-                    },
-                    keyLabel:{
-                        maxWidth: 200
-                    },
-                    valueLabel:{
-                        maxWidth: 200
-                    }
-                },
                 dimension: {
                     content: {
                         key: datum => datum?.name,

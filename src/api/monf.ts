@@ -1,7 +1,7 @@
 import { request } from "@/utils/request";
-import { Categorie } from "./categorie";
-import { Comment, GetArticleParams } from "./post";
-import { User } from "./user";
+import type { Categorie } from "./categorie";
+import type { Comment, GetArticleParams } from "./post";
+import type { User } from "./user";
 
 export interface Monf2023ApplyParams {
     teamName: string,
@@ -100,7 +100,7 @@ interface Monf2023ListBody {
 /**
  * @GET 获取monf2023列表
  * */
-export function getMonf2023List(key:string) {
+export function getMonf2023List() {
     return request<Monf2023ListBody>(
         "/event/monf/work",
         {
