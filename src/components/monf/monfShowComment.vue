@@ -1,27 +1,31 @@
 <template>
-    <Popup round :show="show" @click-overlay="close" position="center">
+    <n-modal :show="show" @mask-click="close">
+
+        <!-- <Popup round :show="show" @click-overlay="close" position="center"> -->
         <div class="model">
             <h2>评分</h2>
 
             <ul class="selectTopTip align-center" :class="{ disabled: loading }">
-                <Popover :close-on-click-action="false" placement="top" v-model:show="emojiShow" :actions="[]">
-                    <template #reference>
+                <n-popover trigger="click" placement="top">
+                    <template #trigger>
                         <li @click="checkEmojiPopover">
                             <span class="EmojiIcon">😀</span>
                         </li>
                     </template>
                     <div style="max-width:300px;height: 244px;width: 300px;">
-                        <Tabs shrink swipeable style="max-width:300px">
-                            <Tab v-for="(v, k) in emojis" :name="k" :title="v[0].emoji">
+                        <n-tabs animated>
+                            <n-tab-pane :tab="v[0].emoji" v-for="(v, k) in emojis" :name="k" :title="v[0].emoji">
                                 <ul class="emojiGrid">
                                     <li @click="setEmoji(item)" v-for="item in v" class="center">
                                         {{ item.emoji }}
                                     </li>
                                 </ul>
-                            </Tab>
-                        </Tabs>
+                            </n-tab-pane>
+
+                        </n-tabs>
+
                     </div>
-                </Popover>
+                </n-popover>
             </ul>
             <div id="Editor">
                 <textarea :disabled="loading" v-model="content" ref="editorInput" type="text"
@@ -32,42 +36,42 @@
                     <template #label>
                         <n-checkbox v-model:checked="checkedChartVote">谱面分数</n-checkbox>
                     </template>
-                    <n-input-number :disabled="!checkedChartVote" clearable  :max="100" :min="0"
-                        v-model:value="chartScore" button-placement="both" />
+                    <n-input-number :disabled="!checkedChartVote" clearable :max="100" :min="0" v-model:value="chartScore"
+                        button-placement="both" />
                 </n-form-item>
                 <n-form-item class="voteInput" label="音乐分数" :rule="{ required: true, message: '请输入音乐评分' }">
                     <template #label>
                         <n-checkbox v-model:checked="checkedMusicVote">音乐分数</n-checkbox>
                     </template>
-                    <n-input-number :disabled="!checkedMusicVote" clearable  :max="100" :min="0"
-                        v-model:value="musicScore" button-placement="both" />
+                    <n-input-number :disabled="!checkedMusicVote" clearable :max="100" :min="0" v-model:value="musicScore"
+                        button-placement="both" />
                 </n-form-item>
 
             </div>
             <span class="text-3 text-gray" v-if="update">
                 <span class="text-red">*</span>
                 如果您已经评过分,那么附带分数的评论将会覆盖上一次评分的评论</span>
-            <Button style="margin-top:12px" :disabled="loading" :loading="loading" @click="sendComment" type="primary" round
-                block>打分</Button>
+            <n-button style="margin-top:12px" :disabled="loading" :loading="loading" @click="sendComment" type="primary"
+                round block>打分</n-button>
         </div>
-    </Popup>
+    </n-modal>
 </template>
 
 <script lang="ts" setup>
-import { NFormItem, NInputNumber, NCheckbox } from "naive-ui"
-import { Uploader, Popup, Popover, Tab, Tabs, Button, showFailToast, showSuccessToast, UploaderFileListItem } from "vant";
+import { NFormItem, NInputNumber, NCheckbox, useMessage } from "naive-ui"
 import * as unicodeEmoji from 'unicode-emoji';
-import { commentPost } from "~~/api/comment";
-import { User } from "~~/api/user";
+// import { commentPost } from "@/monf/api/comment";
+import { User } from "@/api/user";
 import { Article, Comment, MonfVoteDetail } from "@/api/post"
 import { monf2023Comment, monf2023CommentParams, monf2023CommentUpdate, MonfComment } from "@/api/monf"
+import { ref, nextTick } from "vue";
 const checkedChartVote = ref(false)
 const checkedMusicVote = ref(false)
 const editorInput = ref<HTMLTextAreaElement>()
 const content = ref("");
 const chartScore = ref(0);
 const musicScore = ref(0);
-
+const message = useMessage()
 
 const loading = ref(false)
 const emojis = unicodeEmoji.getEmojisGroupedBy("category", {
@@ -122,13 +126,10 @@ function close() {
 async function sendComment() {
     const str = content.value.trim()
     if (str.length <= 0) {
-        showFailToast("请您输入评论")
+        message.warning("请您输入评论")
         return;
     }
-    if (str.length < 1) {
-        showFailToast("不可输入单个字符");
-        return;
-    }
+
     loading.value = true;
     try {
         if (!prop.monfId) throw new Error("不存在此帖子")
@@ -143,24 +144,21 @@ async function sendComment() {
             Reflect.set(monfVote, "musicScore", musicScore.value)
         }
         let data;
-        console.log(prop.update, prop.myWorkId)
         if (prop.update && prop.myWorkId && (checkedChartVote.value || checkedMusicVote.value)) {
-            console.log("进入这里")
-            const result = await monf2023CommentUpdate(prop.myWorkId, "monf/update/comment", monfVote)
+            const result = await monf2023CommentUpdate(prop.myWorkId, monfVote)
             data = result.data
         } else {
-            const result = await monf2023Comment("monf/comment", monfVote)
+            const result = await monf2023Comment(monfVote)
             data = result.data
         }
 
-        showSuccessToast("评分成功")
-        if (!data.value) return;
+        message.success("评分成功")
         checkedChartVote.value = false
         checkedMusicVote.value = false
         content.value = ""
         chartScore.value = 0
         musicScore.value = 0;
-        emit("success", data.value.data.includes.users, data.value.data.workComment)
+        emit("success", data.includes.users, data.workComment)
         loading.value = false;
         close()
     } finally {
@@ -338,6 +336,4 @@ async function sendComment() {
         padding: 2px;
     }
 }
-
-
 </style>    

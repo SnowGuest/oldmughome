@@ -59,7 +59,7 @@ async function cutOffTicket() {
     if (!prop.vote) return;
     const message = prompt("请输入削票原因(选填)");
     if (message === null) return;
-    const { data:{workComment}, code } = await cutOffTicketAPI(`${prop.vote.id}`, message);
+    const { data: { workComment }, code } = await cutOffTicketAPI(`${prop.vote.id}`, message);
     if (code === 0) {
         emit("updateComment", workComment)
         messages.success("削票成功")
