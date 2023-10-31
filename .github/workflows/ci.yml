@@ -1,8 +1,8 @@
 name: pages-build-site
 on: 
-  push:  // 有代码push或者merge到main分支时，才进行下面的操作
-    branches: 
-      - main
+  push:  
+    branches:
+    - master
 jobs:
   deploy:
     runs-on: ubuntu-latest 
