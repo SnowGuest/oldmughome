@@ -72,7 +72,7 @@ axios.interceptors.request.use((config) => {
     }
     return config
 });
-
+// 这是一个测试部署
 
 async function useRequestBody<T extends InstanceBody<any>>(response: Promise<AxiosResponse<T>>, errors: ErrorInstall = ErrorInstance): Promise<T> {
     const notification = window.Nnotification
