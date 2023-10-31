@@ -1,6 +1,6 @@
 <template>
-    <div class="commentCard column">
-        <div class="between commentCard_header">
+    <div class="commentCard flex column">
+        <div class="flex justify-between commentCard_header">
             <h3>全部评论</h3>
             <ol class="selectComment">
                 <li @click="setCommentType(ArticleSortField.LikeCount)"
@@ -13,26 +13,26 @@
 
         <li v-for="[id, item] in comments" class="comment" v-show="!item.isHidden" :key="item.id">
             <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
-                <n-image round :width="50" :height="50" :src="getUser(item.createdUserId)?.avatarUrl">
-                </n-image>
+                <userCard :user="getUser(item.createdUserId)" :size="50" />
             </RouterLink>
             <div class="commentBody">
-                <div class="align-center between">
+                <div class="flex items-center justify-between">
                     <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`">
                         <h4 class="nickName">{{ getUser(item.createdUserId)?.nickName }}</h4>
                         <h5 class="desu">{{ getUser(item.createdUserId)?.bio }}</h5>
                     </RouterLink>
-                    <div class="center commentLike" @click="likeComment(item)">
+                    <div class="flex justify-center items-center commentLike" @click="likeComment(item)">
                         <span class="likeCount">{{ item.likeCount }}</span>
-                        <Icon :class="{ isLiked: item.relations?.isLiked }"
-                            :name="item.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                        <box-icon v-show="item.relations?.isLiked" name='heart'></box-icon>
+                        <box-icon v-show="!item.relations?.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+
                     </div>
                 </div>
                 <CommentVote @updateComment="e => updateComment(item, e)" v-if="showVote(item)" :commentId="item.id"
                     :vote="item" />
                 <div class="commentContent">{{ item.comment }}</div>
 
-                <div class="commentControl align-center" :id="`commentControl${item.id}`">
+                <div class="commentControl flex items-center" :id="`commentControl${item.id}`">
                     <time class="time">发布于 {{ getCreateTime(item.createdDate) }}</time>
                 </div>
 
@@ -47,11 +47,11 @@
 </template>
 
 <script lang="tsx" setup >
-import ShowComment from "@/components/monf/showComment.vue"
-import CommentVote from "./commentVote.vue"
+import ShowComment from "@/components/monf/monfShowComment.vue"
+import CommentVote from "./monfCommentVote.vue"
 import dayjs from "dayjs";
 import { ArticleSortField, type GetArticleParams } from '@/api/post';
-import { type Monf2023CommentsBody,type  MonfComment, monfCommentLike, monfunCommentLike } from '@/api/monf';
+import { type Monf2023CommentsBody, type MonfComment, monfCommentLike, monfunCommentLike } from '@/api/monf';
 import { getMonf2023Comment } from "@/api/monf";
 import type { User } from "@/api/user";
 import { storeToRefs } from "pinia";
@@ -60,8 +60,10 @@ import { getUserMap, useApiToPagination } from "@/utils";
 import { ref, reactive } from "vue";
 import { useMessage } from "naive-ui";
 import type { InstanceBody } from "@/utils/request";
+import userCard from "../userCard.vue"
 export interface MonfCommentAPI {
-    show: () => void
+    show: () => void;
+    next: () => void;
 }
 const message = useMessage()
 function showVote(comment: MonfComment) {
@@ -81,6 +83,9 @@ defineExpose<MonfCommentAPI>({
     show() {
         showComment.value = true
     },
+    next() {
+        commitPagination.next()
+    }
 })
 const props = defineProps<Prop>();
 const users = new Map<User["id"], User>()
@@ -130,8 +135,6 @@ async function putComment(user: User[], comment: MonfComment) {
 const { logged } = storeToRefs(useUserStore())
 async function likeComment(comment: MonfComment) {
     if (!logged.value.login) {
-
-
         message.warning("请先登录"); return;
     }
     let isLike = Boolean(comment.relations?.isLiked)
@@ -144,14 +147,8 @@ async function likeComment(comment: MonfComment) {
         message.success(isLike ? "取消点赞" : "点赞成功");
         comment.likeCount += sum
     }
-
-
 }
-defineExpose({
-    next() {
-        commitPagination.next()
-    }
-})
+
 
 async function setCommentType(e: ArticleSortField) {
     searchParams.sortField = e;
@@ -301,5 +298,15 @@ function updateComment(newComment: MonfComment, oldComment: MonfComment) {
         width: 1px;
         height: 50%;
     }
+}
+
+.userHeader {
+    height: 62px;
+    width: 62px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
 }
 </style>

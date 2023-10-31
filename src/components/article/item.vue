@@ -2,7 +2,7 @@
 <template>
     <li class="article">
         <RouterLink :to="`/account/${user?.id}`" target="_blank" class="pr-3">
-            <n-avatar v-if="user?.avatarUrl" round :size="46"   :src="user?.avatarUrl" alt="头像" />
+            <n-avatar v-if="user?.avatarUrl" round :size="46" :src="user?.avatarUrl" alt="头像" />
             <div v-else-if="user" class="user-headers user_head" :style="`background-color:${getColor()}`">
                 {{ user.nickName[0] }}
             </div>
@@ -36,12 +36,13 @@
                 <ArticleTag :tags="categorie" />
                 <RouterLink :to="`/article/${article.id}/#comment`" target="_blank" rel="bookmark"
                     class="flex items-center justify-between control_model">
-                    <Icon name="ci:message-writing" />
+                    <box-icon name='message-square-dots'></box-icon>
                     <span>{{ article.commentCount }}</span>
                 </RouterLink>
                 <div :class="{ noLiked: !article.relations.isLiked }"
-                    class=" justify-between  control_model_like control_model" @click.prevent="likeThis">
-                    <Icon :name="article.relations.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                    class="flex  items-center justify-between control_model" @click.prevent="likeThis">
+                    <box-icon v-show="article.relations.isLiked" name='heart'></box-icon>
+                    <box-icon v-show="!article.relations.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
                     <span>{{ likeCount }}</span>
                 </div>
                 <div class="aricle_footer">
@@ -54,6 +55,8 @@
 </template>
 
 <script lang="ts" setup>
+// import { BeakerIcon } from '@heroicons/vue/24/solid'
+// import { GameControllerOutline, GameController } from '@vicons/fluent'
 import type { User } from "@/api/user";
 import ArticleTag from "@/components/article/tag.vue"
 import { type Article, attentionUser, like } from "@/api/post";
@@ -262,12 +265,13 @@ function getColor() {
 
 .control_model {
     width: 45px;
+    
     margin-right: 30px;
 }
 
 .control_model_like {
-    transform: translateY(-2px);
-    align-items: flex-end;
+    // transform: translateY(-2px);
+    // align-items: flex-end;
 }
 
 .noLiked {

@@ -5,9 +5,10 @@
             <img class="logoText" src="@/assets/image/logoText.png" alt="">
         </nav>
         <n-tabs :value="checkValue">
-            <n-tab v-for="(e, i) in menus" :key="e" :name="e">
-                <RouterLink :to="e" class="mug_pc-header-menu" :class="{ 'mug_pc-header-menu-check': checkValue === e }">{{
-                    $t(`component.header.menu[${i}]`) }}</RouterLink>
+            <n-tab v-for="(e, i) in menus" :key="e" :name="e.path">
+                <RouterLink :to="e" class="mug_pc-header-menu"
+                    :class="{ 'mug_pc-header-menu-check': checkValue === e.path }">{{
+                        $t(`component.header.menu[${i}]`) }}</RouterLink>
             </n-tab>
         </n-tabs>
         <i18n />
@@ -20,15 +21,13 @@
 import avatar from "../user/avatar.vue";
 import search from "./search.vue";
 import i18n from "./i18n.vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
-// import { provide, ref } from "vue";
-// import { DIRECTION } from "@/utils";
-let checkValue = computed(e=>{
+let checkValue = computed(e => {
     return route.path
-}) 
-const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
+})
+const menus = [{ path: "/", match: ["/article/"] }, { path: "/categories", match: [] }, { path: "/monf/2023", match: [] }, { path: "/bof/2023", match: [] }]
 
 </script>
 <style lang="scss" scoped>

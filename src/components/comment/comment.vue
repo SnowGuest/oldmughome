@@ -14,8 +14,10 @@
                     </RouterLink>
                     <div class="justify-center flex items-center commentLike" @click="likeComment(item)">
                         <span class="likeCount">{{ item.likeCount }}</span>
-                        <Icon :class="{ isLiked: item.relations?.isLiked }"
-                            :name="item.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+
+                        <box-icon v-show="item.relations?.isLiked" name='heart'></box-icon>
+                        <box-icon v-show="!item.relations?.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+
                     </div>
                 </div>
 
@@ -41,8 +43,10 @@
                                 </RouterLink>
                                 <div class="justify-center flex items-center commentLike" @click="likeComment(child)">
                                     <span class="likeCount">{{ child.likeCount }}</span>
-                                    <Icon :class="{ isLiked: child.relations?.isLiked }"
-                                        :name="child.relations?.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                                    <box-icon v-show="child.relations?.isLiked" name='heart'></box-icon>
+                                    <box-icon v-show="!child.relations?.isLiked" name='heart' type='solid'
+                                        color='#fb0101'></box-icon>
+                                    
                                 </div>
                             </div>
                             <div class="commentContent">{{ child.content }}</div>

@@ -122,6 +122,7 @@ const monfList = ref<Monf[]>([])
 const rowProps: DataTableCreateRowProps<Monf> = (row) => {
     return {
         onClick() {
+            document.title = `${row.songName} - ${row.teamName}`;
             window.open(router.resolve({
                 path: `/monf/${row.id}`
             }).href, "_blank")

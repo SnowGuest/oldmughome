@@ -27,7 +27,7 @@
                 <ArticleTag />
                 <div class="lockUser " id="comments" ref="commentsDom">{{ article?.viewCount }}人浏览
                     <n-popselect :options="actions" size="medium" @update:value="">
-                        <Icon name="ci:more-horizontal" class="moreMenu" />
+                        <box-icon name='dots-horizontal-rounded'  class="moreMenu" ></box-icon>
                     </n-popselect>
                 </div>
                 <div class="likeUsers flex justify-center items-center flex column" v-show="article && likeUsers.size > 0">
@@ -57,12 +57,15 @@
             <aside class="cardFooter flex items-center">
                 <div class="openInput " @click="ShowModel(article?.id, false)">说点什么吧~</div>
                 <div class="flex justify-between column commentIconBox" @click="ShowModel(article?.id, false)">
-                    <Icon name="ci:message-writing" />
+                    <box-icon name='message-square-dots'></box-icon>
+                    <!-- <Icon name="ci:message-writing" /> -->
                     <div class="iconSum">{{ comments.size }}</div>
                 </div>
                 <div class="flex justify-between column likeIconBox" @click="like_this">
-                    <Icon :class="{ isliked: article?.relations.isLiked }"
-                        :name="article?.relations.isLiked ? 'flat-color-icons:like' : 'ci:heart-outline'" />
+                    <box-icon v-show="article?.relations?.isLiked" name='heart'></box-icon>
+                    <box-icon v-show="!article?.relations?.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+
+
                     <div class="iconSum">{{ article?.likeCount }}</div>
                 </div>
             </aside>
@@ -118,8 +121,8 @@ import ArticleTag from '@/components/article/tag.vue';
 import SideBar from '@/components/sideBar/index.vue';
 import comment from "@/components/comment/comment.vue"
 import { storeToRefs } from "pinia";
-import {type  User, followUserApi, unfollowUserApi } from '@/api/user';
-import { type Comment, ArticleSortField, like} from '@/api/post';
+import { type User, followUserApi, unfollowUserApi } from '@/api/user';
+import { type Comment, ArticleSortField, like } from '@/api/post';
 import dayjs from 'dayjs';
 import ShowComment from '@/components/article/showComment.vue';
 import { useUserStore } from '@/stores/user';

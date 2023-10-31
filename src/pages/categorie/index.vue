@@ -24,7 +24,7 @@
                         <n-popselect :options="actions" size="medium" @update:value="checkSort">
                             <div class="popoverMenu">
                                 <span style="margin-right:8px">{{ sortText }}</span>
-                                <Icon   :width="14" :height="14"   name="arrow-down" />
+                                <box-icon name='chevron-down'></box-icon>
                             </div>
                         </n-popselect>
                     </div>
@@ -50,7 +50,7 @@ import ScrollView from "@/components/scrollview/scrollView.vue"
 import ArticleVue from "@/components/article/item.vue";
 // import SideBar from '@/components/SideBar/index.vue';
 // import { Popover, Icon, type PopoverAction, List } from "vant"
-import { type Article,type ArticlesBody, getArticleList } from '@/api/post';
+import { type Article, type ArticlesBody, getArticleList } from '@/api/post';
 import type { User } from '@/api/user';
 import type { Categorie } from '@/api/categorie';
 import { getUserMap, isColorDarkOrLight, Reg2Rgb, useApiToPagination } from '@/utils';

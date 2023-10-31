@@ -5,6 +5,12 @@ import { type UploadFileInfo } from 'naive-ui'
 
 import { uploaderFile } from "@/api/file";
 import { type Ref, ref } from "vue";
+
+
+export function getColor() {
+    return `#${Math.random().toString(16).substr(-6)}`
+}
+
 export function getUserMap(user: User[] = [], userMap?: Map<number, User>) {
     const users = userMap || reactive<Map<number, User>>(new Map<number, User>());
     user.forEach(e => {
@@ -12,7 +18,8 @@ export function getUserMap(user: User[] = [], userMap?: Map<number, User>) {
             e.avatarUrl = `http://assets.mughome.top/avatar/${e.avatarUrl}`
         }
         if (!users.has(e.id)) {
-            users.set(e.id, e)
+
+            users.set(e.id, { ...e, color: getColor() })
         }
     })
     return users

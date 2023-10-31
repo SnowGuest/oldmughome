@@ -13,7 +13,7 @@ import zhCn from './locales/zh-cn.json';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import { createHead } from '@unhead/vue'
-
+import 'boxicons';
 const head = createHead()
 type MessageSchema = typeof zhCn
 const i18n = createI18n<[MessageSchema], "zh-cn" | "en-us">({

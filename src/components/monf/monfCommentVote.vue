@@ -1,5 +1,5 @@
 <template>
-    <div class="flex between" style="align-items: flex-end;">
+    <div class="flex justify-between items-end">
         <div class="CommentVote" v-if="vote" :class="{ CommentVoteSlashed: getSlashed() }">
             <h4 style="width:100%">作品评价</h4>
             <span style="white-space: nowrap;">
@@ -13,20 +13,21 @@
             </div>
         </div>
         <div v-else></div>
-        <Popover :actions="actions" @select="selectMenu" v-if="loginUser.userInfo && loginUser.userInfo?.role > 0">
-            <template #reference>
-                <Icon name="ci:more-horizontal" class="moreMenu" />
-            </template>
-        </Popover>
+
+
+
+        <n-popselect :options="actions" trigger="click" @update:value="selectMenu"
+            v-if="loginUser.userInfo && loginUser.userInfo?.role > 0">
+            <box-icon name='dots-horizontal-rounded' class="moreMenu"></box-icon>
+        </n-popselect>
+
     </div>
 </template>
 
 <script lang="ts" setup>
-import { PopoverAction, } from 'vant';
 import { MonfComment, cutOffTicketAPI } from '@/api/monf';
 
 import { useUserStore } from '@/stores/user';
-import { Popover } from "vant"
 import { useMessage } from 'naive-ui';
 import { computed } from 'vue';
 const prop = defineProps<{
@@ -39,15 +40,15 @@ const messages = useMessage()
 function getSlashed() {
     return prop.vote?.isSlashed
 }
-const actions = computed<PopoverAction[]>(() => {
+const actions = computed(() => {
     const list = []
-    if (loginUser.userInfo && loginUser.userInfo?.role > 0) list.push({ id: "+1", text: "削票" })
+    if (loginUser.userInfo && loginUser.userInfo?.role > 0) list.push({ value: "+1", label: "削票" })
     return list
 })
 const loginUser = useUserStore();
 const arr = new Map<string, Function>([["+1", cutOffTicket]])
-function selectMenu(e: PopoverAction) {
-    const func = arr.get(e.id)
+function selectMenu(e: string) {
+    const func = arr.get(e)
     if (func) func()
 }
 async function cutOffTicket() {

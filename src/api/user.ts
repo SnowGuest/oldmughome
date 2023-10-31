@@ -45,6 +45,7 @@ export interface User {
     bio?: string,
     userCoverUrl?: string
     postCount: string;
+    color?: string;
     followerCount: string;
     relations?: {
         /* 是否关注了此用户 */
@@ -92,7 +93,7 @@ export interface UpdateUserInfoParams {
     userCover?: File;
 }
 
-export function updateUserInfo( id: User["id"], data: UpdateUserInfoParams) {
+export function updateUserInfo(id: User["id"], data: UpdateUserInfoParams) {
     const fd = new FormData();
     Object.keys(data).forEach(k => {
         const v = data[k as keyof UpdateUserInfoParams]
@@ -109,7 +110,7 @@ export function updateUserInfo( id: User["id"], data: UpdateUserInfoParams) {
 /**
  * @description 更新用户email
  * */
-export function updateUserEmail( id: User["id"], data: UpdateUserInfoParams) {
+export function updateUserEmail(id: User["id"], data: UpdateUserInfoParams) {
     return request<LoginBody>(`/account/${id}/email`, {
         method: "PUT",
         data
@@ -126,7 +127,7 @@ export function updateUserEmail( id: User["id"], data: UpdateUserInfoParams) {
  * @POST 更换上传头像
  * @param file File
  * */
-export function uploaderUserAvatar( id: User["id"], file: File) {
+export function uploaderUserAvatar(id: User["id"], file: File) {
     const fd = new FormData()
     fd.append("avatar", file)
     return request<LoginBody>(`account/${id}`, {
@@ -142,7 +143,7 @@ export function uploaderUserAvatar( id: User["id"], file: File) {
  * @GET 忘记密码
  * @param file File
  * */
-export function forgetPassWord( account: string) {
+export function forgetPassWord(account: string) {
     return request<null>("account/forget", {
         method: "GET",
         params: { account }
@@ -156,7 +157,7 @@ export function forgetPassWord( account: string) {
  * @description 关注用户
  * */
 
-export function followUserApi( userId: string | number) {
+export function followUserApi(userId: string | number) {
     return request<null>(`/user/follow/${userId}`, {
         method: "GET",
     }, {
@@ -164,7 +165,7 @@ export function followUserApi( userId: string | number) {
         34: "您不能关注您自己"
     });
 }
-export function unfollowUserApi( userId: string | number) {
+export function unfollowUserApi(userId: string | number) {
     return request<null>(`/user/unfollow/${userId}`, {
         method: "GET",
     }, {
@@ -190,7 +191,7 @@ export async function getCaptcha(key: string) {
 /**
  * @
  * */
-export async function sendEmailCode( email: string) {
+export async function sendEmailCode(email: string) {
     return request<null>(`/account/sendRegisterCode`, {
         method: "GET",
         params: {

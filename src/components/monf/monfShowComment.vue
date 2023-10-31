@@ -5,7 +5,7 @@
         <div class="model">
             <h2>评分</h2>
 
-            <ul class="selectTopTip align-center" :class="{ disabled: loading }">
+            <ul class="selectTopTip flex items-center" :class="{ disabled: loading }">
                 <n-popover trigger="click" placement="top">
                     <template #trigger>
                         <li @click="checkEmojiPopover">
