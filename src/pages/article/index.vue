@@ -1,11 +1,11 @@
 <template>
-    <ScrollView>
+    <ScrollView @load="next" class="flex mainPageScroll justify-center">
         <div class="mainPage">
             <div class="card flex column" id="card">
                 <div class="flex items-center">
-                    <n-image v-if="user?.avatarUrl" round :src="user?.avatarUrl" size="62" alt="头像" />
+                    <n-avatar v-if="user?.avatarUrl" round :src="user?.avatarUrl" :size="62" alt="头像" />
                     <div v-else class="userHeader" :style="`background-color:${getColor()}`">
-                        {{ user?.nickName[0] }}
+                        {{ user?.nickName }}
                     </div>
                     <div class="justify-center items-center flex">
                         <div class="nickName flex column">
@@ -22,21 +22,19 @@
                 </div>
                 <h2 class="title">{{ article?.title }}</h2>
                 <MdPreview @get-catalog="showCatalog = Array.isArray($event) && $event.length > 0"
-                    :editorId="markDownState.id" :theme="appInstance?.theme" class="articleContent"
-                    :model-value="article?.content" preview preview-only />
+                    :editorId="markDownState.id" class="articleContent" :model-value="article?.content" preview
+                    preview-only />
                 <ArticleTag />
                 <div class="lockUser " id="comments" ref="commentsDom">{{ article?.viewCount }}人浏览
-                    <Popover :actions="actions">
-                        <template #reference>
-                            <Icon name="ci:more-horizontal" class="moreMenu" />
-                        </template>
-                    </Popover>
+                    <n-popselect :options="actions" size="medium" @update:value="">
+                        <Icon name="ci:more-horizontal" class="moreMenu" />
+                    </n-popselect>
                 </div>
                 <div class="likeUsers flex justify-center items-center flex column" v-show="article && likeUsers.size > 0">
                     <span>{{ article?.likeCount }}人表示很赞</span>
                     <ul class="likeUsersElement">
                         <li v-for="[id, item] in likeUsers">
-                            <n-image round :src="users.get(id)?.avatarUrl" size="32" alt="头像"></n-image>
+                            <n-avatar round :src="users.get(id)?.avatarUrl" :size="32" alt="头像"></n-avatar>
                         </li>
                     </ul>
                 </div>
@@ -54,8 +52,7 @@
                             :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.createdDate }">时间</li>
                     </ol>
                 </div>
-                <comment v-model:status="commentStatus" @comment="ShowModel" :next="nextComment" :users="users"
-                    :comments="comments" :scores="scores" />
+                <comment @comment="ShowModel" :users="users" :comments="comments" />
             </div>
             <aside class="cardFooter flex items-center">
                 <div class="openInput " @click="ShowModel(article?.id, false)">说点什么吧~</div>
@@ -77,9 +74,9 @@
                 </div>
                 <div class="newcardBody column flex justify-center items-center">
                     <div class="flex items-center">
-                        <NuxtLink target="_blank" :to="`/account/${user?.id}`">
-                            <n-image round :src="user?.avatarUrl" size="62" alt="头像" />
-                        </NuxtLink>
+                        <RouterLink target="_blank" :to="`/account/${user?.id}`">
+                            <n-avatar round :src="user?.avatarUrl" :size="62" alt="头像" />
+                        </RouterLink>
                         <div class="newcardBodyRight">
                             <h5>{{ user?.nickName }}</h5>
                             <span class="bio">{{ user?.bio || "这位用户没有简介哦~" }}</span>
@@ -119,16 +116,14 @@ import background from '@/components/background.vue';
 import { MdPreview, MdEditor, MdCatalog } from 'md-editor-v3';
 import ArticleTag from '@/components/article/tag.vue';
 import SideBar from '@/components/sideBar/index.vue';
-import { Image, Popover, showFailToast, Button, showSuccessToast } from "vant"
 import comment from "@/components/comment/comment.vue"
 import { storeToRefs } from "pinia";
 import { User, followUserApi, unfollowUserApi } from '@/api/user';
-import { ArticleBody, type Comment, getArticle, ArticleSortField, like, GetArticleParams, MonfVoteDetail, MonfVote } from '@/api/post';
+import { type Comment, ArticleSortField, like, MonfVoteDetail, MonfVote } from '@/api/post';
 import dayjs from 'dayjs';
 import ShowComment from '@/components/article/showComment.vue';
 import { useUserStore } from '@/stores/user';
-import { APP } from "@/app.vue";
-import { init, getArticleInfo } from "@/components/article/preload"
+import { init } from "@/components/article/preload"
 import { computed, inject, onMounted, provide, ref } from 'vue';
 import { useMessage } from 'naive-ui';
 import { getUserMap } from '@/utils';
@@ -138,16 +133,12 @@ export interface CommentStatus {
     finished: boolean,
     loading: boolean,
 }
-export interface ArticlePageAPI {
-    setMoveDetali: (id: number, value: MonfVoteDetail) => void
-}
+
 const message = useMessage()
 
 
 const showVote = ref(false)
 const showCatalog = ref(false)
-// App实例
-const appInstance = inject<APP>("APP")
 // 评论Dom
 const commentsDom = ref<HTMLDivElement>();
 
@@ -162,17 +153,15 @@ const id = typeof route.params.id === "string" ? route.params.id : null;
 if (!id) throw new Error("此帖子不存在或已被删除");
 const data = init(id)
 const { article,
-    scores,
     searchParams,
     selectComment,
     markDownState,
     likeUsers,
-    comments,
     isVote,
     userJoinDay,
     user,
     users,
-    articlePagination,
+    articlePagination: { next, list: comments, reload },
 } = data;
 // const searchParams = reactive<GetArticleParams>({
 //     sortField: ArticleSortField.createdDate,
@@ -188,23 +177,9 @@ const { article,
 async function setCommentType(e: ArticleSortField) {
     if (!id) return;
     searchParams.sortField = e;
-    comments.value.clear()
-    getArticleInfo(id, searchParams, users);
+    reload(searchParams)
 }
 const actions: any[] = [];// [{ text: "举报" }]
-
-async function nextComment() {
-    if (!id) return;
-    if (!searchParams.page) return
-    searchParams.page++;
-    const result = getArticleInfo(id, searchParams, users);
-    if (result?.scores) scores.value = result.scores.value
-
-}
-
-
-
-
 
 
 
@@ -227,9 +202,6 @@ const createTime = computed(() => {
     return dayjs(dayjs()).diff(articleCreateTime, "hour") > 12 ? dayjs(articleCreateTime).format("YYYY/MM/DD HH:mm") : dayjs(articleCreateTime).fromNow();
 })
 
-useHead({
-    title: `${article.value?.title} - MUGHome`
-})
 
 
 
@@ -277,14 +249,8 @@ function ShowModel(e?: Comment | number | string, isShowVote = false) {
     selectComment.show = true
 }
 /* 评论成功的回调 */
-function commentSuccess(user: User[], comment: Comment, monfDetalis?: MonfVoteDetail[]) {
+function commentSuccess(user: User[], comment: Comment) {
     getUserMap([...user], users);
-    if (Array.isArray(monfDetalis)) {
-        monfDetalis.forEach(e => {
-            scores.value.set(e.id, e)
-        })
-
-    }
     if (typeof comment.relations?.parentCommentId === "number") {
         const flag = comments.value.get(comment.relations?.parentCommentId)
         if (!flag) return;
@@ -298,7 +264,7 @@ function commentSuccess(user: User[], comment: Comment, monfDetalis?: MonfVoteDe
 async function like_this() {
     if (!article.value) return;
     if (!logged.value.login) {
-        showFailToast("请先登录");
+        message.warning("请先登录");
         return;
     }
     let isLike = article.value.relations.isLiked;
@@ -314,11 +280,6 @@ async function like_this() {
 
 }
 
-provide<ArticlePageAPI>("ArticlePage", {
-    setMoveDetali(id, value) {
-        scores.value.set(id, value)
-    }
-})
 
 
 function getColor() {
@@ -334,20 +295,23 @@ function getColor() {
     font-size: 14px;
 }
 
-@media screen and (max-width: 1170px) {
+@media screen and (max-width: 768px) {
 
-    .mainPage {
+    .mainPageScroll {
         max-width: 100vw;
     }
 }
 
 .mainPage {
-    flex: 1;
-    width: 100%;
+    // flex: 1;
+    // width: 100%;
+    max-width: 100vw;
+    width: 770px;
 }
 
-.mainPage {
-    max-width: 770px;
+.mainPageScroll {
+    margin: 0 auto;
+    padding-top: 16px;
 }
 
 .commentCard {

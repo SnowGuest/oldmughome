@@ -2,7 +2,7 @@
     <li class="categorie" @click="setTitle">
         <RouterLink :to="`/categorie/${categorie.id}`" class="flex items-center" target="_blank" rel="bookmark">
             <div class="Icon flex items-center justify-center">
-                <useIcon :size="24" :color="categorie.color" :src="categorie.icon"></useIcon>
+                <useIcon :width="24" :height="24" :color="categorie.color" :src="categorie.icon"></useIcon>
             </div>
             <div>
                 <h4 class="categorieTitle">{{ categorie.name }}</h4>

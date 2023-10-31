@@ -24,7 +24,7 @@
                         <n-popselect :options="actions" size="medium" @update:value="checkSort">
                             <div class="popoverMenu">
                                 <span style="margin-right:8px">{{ sortText }}</span>
-                                <Icon size="14" name="arrow-down" />
+                                <Icon   :width="14" :height="14"   name="arrow-down" />
                             </div>
                         </n-popselect>
                     </div>

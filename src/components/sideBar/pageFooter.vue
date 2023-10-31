@@ -1,8 +1,8 @@
 <template>
     <footer class="sidebar-footer">
-        <NuxtLink to="/privacyPolicy" target="_blank" rel="bookmark"><span>社区隐私政策</span></NuxtLink>
+        <RouterLink to="/privacyPolicy" target="_blank" rel="bookmark"><span>社区隐私政策</span></RouterLink>
         <span>&nbsp;|&nbsp;</span>
-        <NuxtLink to="/userProtocol" target="_blank" rel="bookmark"> <span>用户协议</span></NuxtLink>
+        <RouterLink to="/userProtocol" target="_blank" rel="bookmark"> <span>用户协议</span></RouterLink>
     </footer>
 </template>
 

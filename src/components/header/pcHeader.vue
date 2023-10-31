@@ -1,12 +1,12 @@
 <template>
-    <header class="mug_pc-header" >
+    <header class="mug_pc-header">
         <nav class="flex items-center justify-center  pr-3 mr-3 mug_pc-logoBody">
             <img class="logo" src="@/assets/image/logo.png" alt="">
             <img class="logoText" src="@/assets/image/logoText.png" alt="">
         </nav>
-        <n-tabs>
+        <n-tabs :value="checkValue">
             <n-tab v-for="(e, i) in menus" :key="e" :name="e">
-                <RouterLink :to="e" class="mug_pc-header-menu" active-class="mug_pc-header-menu-check">{{
+                <RouterLink :to="e" class="mug_pc-header-menu" :class="{ 'mug_pc-header-menu-check': checkValue === e }">{{
                     $t(`component.header.menu[${i}]`) }}</RouterLink>
             </n-tab>
         </n-tabs>
@@ -17,12 +17,17 @@
 </template>
 
 <script lang="ts" setup>
-import avatar from "../user/avatar.vue"
-import search from "./search.vue"
-import i18n from "./i18n.vue"
+import avatar from "../user/avatar.vue";
+import search from "./search.vue";
+import i18n from "./i18n.vue";
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 // import { provide, ref } from "vue";
 // import { DIRECTION } from "@/utils";
-
+let checkValue = computed(e=>{
+    return route.path
+}) 
 const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
 
 </script>
@@ -75,4 +80,5 @@ const menus = ["/", "/categories", "/monf/2023", "/bof/2023"]
         object-fit: cover;
         height: 20px;
     }
-}</style>
+}
+</style>

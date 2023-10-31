@@ -1,13 +1,13 @@
-import { GetArticleParams, ArticleSortField, MonfVoteDetail, getArticle, MonfVote, Article, like, ArticlesBody, getArticleList } from "@/api/post";
-import { User } from "@/api/user";
+import { getArticle, like, ArticleSortField } from "@/api/post";
+import type { GetArticleParams, MonfVoteDetail, MonfVote, Article, ArticleBody } from "@/api/post";
+import type { User } from "@/api/user";
 import type { Comment } from "@/api/post"
 // import { showFailToast, showSuccessToast } from "vant";
 import { useUserStore } from "@/stores/user";
-import dayjs from 'dayjs';
 import { getUserMap, useApiToPagination } from "@/utils";
-import { reactive, Ref, ref } from "vue";
-import { useMessage } from "naive-ui";
-import { InstanceBody } from "@/utils/request";
+import { reactive, type Ref, ref } from "vue";
+import type { InstanceBody } from "@/utils/request";
+import dayjs from "dayjs";
 
 /** 评论列表状态 */
 export interface CommentStatus {
@@ -28,13 +28,13 @@ export function getArticleInfo(id: number | string, searchParams: GetArticlePara
     const likeUsers = ref<Map<number, User>>(new Map());
     const scores = ref<Map<number, MonfVoteDetail>>(new Map());
     const monfVoteInfo = ref<MonfVote | undefined>(undefined);
-    const comments = ref<Map<number, Comment>>(new Map());
+    // const comments = ref<Map<number, Comment>>(new Map());
     const users = new Map<number, User>();
     const isVote = ref(false);
     const myMonfVote = ref<MonfVoteDetail>();
-    let user: User | undefined = undefined;
-    getArticle({ ...searchParams, id }).then(({ data: { post, includes } }) => {
-        article.value = post
+    const user = ref<User | undefined>(undefined);
+    getArticle({ ...searchParams, id }).then(({ data: { post, includes, } }) => {
+        article.value = post;
         // const body = {
         /** 所有点赞的人的信息 */
         // const likeUsers = new Map<number, User>();
@@ -44,8 +44,12 @@ export function getArticleInfo(id: number | string, searchParams: GetArticlePara
         /** 评论map */
         // const comments = new Map<number, Comment>();
         /** 是否是可打分的 */
-
+        getUserMap(includes.users, users);
         // const commentMap = includes.comments;
+        user.value = users.get(post.createdUserId);
+        if (user.value) userJoinDay.value = dayjs().diff(dayjs(user.value.createdDate), 'day')
+        document.title = `${post.title} - MUGHome`
+
         const monfVoteDetails = includes.monfVoteDetails;
         const monfVoteInfos = includes.monfVoteInfos;
         const postLikeUserId = post.relations.postLikeUserId;
@@ -83,39 +87,30 @@ export function getArticleInfo(id: number | string, searchParams: GetArticlePara
             likeUsers.value.set(e, user)
         })
 
-        user = users.get(post.createdUserId);
-        if (!user) throw new Error("未查询到发帖人信息")
+        if (!user.value) throw new Error("未查询到发帖人信息")
     });
     function onLoadArticle() {
-        return useApiToPagination<Article, InstanceBody<ArticlesBody>, "id">(getArticleList, {
-            page: 1,
-            pageSize: 10
-        }, "id", ({ data: { post, includes } }) => {
-            // getUserMap(includes.users, userMap);
+        return useApiToPagination<Comment, InstanceBody<ArticleBody>, "id">(getArticle, { ...searchParams, id }, "id", ({ data: { includes: { comments, users: includesUsers } } }) => {
+            getUserMap(includesUsers, users);
             // includes.categories.forEach(e => {
             //     categories.set(e.id, e)
             // })
-            return post.map(e => {
-                // if (typeof e.relations === "undefined") {
-                //     e.relations = {
-                //         postLikeUserId: [],
-                //         isLiked: false,
-                //         categoryIds: [0, null],
-                //         commentIds: [],
-                //     }
-                //     if (typeof e.relations.isLiked !== "boolean") {
-                //         e.relations.isLiked = false
-                //     }
-                //     if (!Array.isArray(e.relations.categoryIds)) {
-                //         e.relations.categoryIds = [0, null]
-                //     }
-                // }
+            return comments.map(e => {
+                if (e.relations && Array.isArray(e.relations.subCommentIds)) {
+                    e.children = [];
+                    const child = e.relations.subCommentIds.map(e => {
+                        const item = comments.find(j => j.id === e) as Comment;
+                        if (item) item.isHidden = true;
+                        return item
+                    })
+                    e.children.push(...child)
+                }
                 return e
             })
         });
     }
     const articlePagination = onLoadArticle()
-    const { list: comment } = articlePagination;
+    // const { list: comment } = articlePagination;
     return {
         article,
         users,
@@ -124,7 +119,7 @@ export function getArticleInfo(id: number | string, searchParams: GetArticlePara
         likeUsers: ref(likeUsers),
         scores,
         monfVoteInfo: ref(monfVoteInfo),
-        comments: ref(comments),
+        // comments: ref(comments),
         /** 是否是可打分的 */
         isVote,
         myMonfVote,

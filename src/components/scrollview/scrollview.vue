@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { DIRECTION } from '@/utils';
-import { inject } from 'vue';
+
 
 interface Emits {
     (event: 'load'): void
@@ -33,8 +32,10 @@ function scroll(e: UIEvent) {
 .ScrollView {
     scroll-behavior: smooth;
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
     max-height: 100%;
     position: relative;
+    padding-left: calc(100vw - 100%);
 }
 </style>

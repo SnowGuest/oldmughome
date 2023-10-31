@@ -1,6 +1,5 @@
-import { Article, MonfVoteDetail } from "./post";
-import { User } from "./user";
-import { Comment } from "@/api/post"
+import type { Article, MonfVoteDetail,Comment } from "./post";
+import type { User } from "./user";
 import { request } from "@/utils/request"
 
 interface CommentPost {

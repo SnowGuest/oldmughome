@@ -1,29 +1,34 @@
 <template>
-    <div class="mainPage">
-        <div class="card">
-            <h2>全部分区</h2>
-            <div v-for="item in categories" :key="item.id" class="mb-6">
-                <RouterLink class="mb-4 flex items-center" target="_blank" :to="`/categorie/${item.id}`">
-                    <h5 class="categorie-title">{{ item.name }}({{ item.postCount }})</h5>
-                    <img width="14" height="14" src="@/assets/icon/arrow-right.svg" alt="">
-                </RouterLink>
-                <ul class="allcategories" v-if="item.children">
-                    <categorieVue v-for="child in item.children" :key="child.id" :categorie="child" />
-                </ul>
-                <!-- <div v-else>
+    <ScrollView>
+        <div class="mainPageBody flex justify-center">
+
+            <div class="mainPage">
+                <div class="card">
+                    <h2>全部分区</h2>
+                    <div v-for="item in categories" :key="item.id" class="mb-6">
+                        <RouterLink class="mb-4 flex items-center" target="_blank" :to="`/categorie/${item.id}`">
+                            <h5 class="categorie-title">{{ item.name }}({{ item.postCount }})</h5>
+                            <img width="14" height="14" src="@/assets/icon/arrow-right.svg" alt="">
+                        </RouterLink>
+                        <ul class="allcategories" v-if="item.children">
+                            <categorieVue v-for="child in item.children" :key="child.id" :categorie="child" />
+                        </ul>
+                        <!-- <div v-else>
                     暂无子分区
                 </div> -->
+                    </div>
+                </div>
             </div>
+            <SideBar :categorie="false" :check="false" />
         </div>
-    </div>
-    <!-- <SideBar :categorie="false" :check="false" /> -->
+    </ScrollView>
 </template>
 
 <script lang="ts" setup>
 import { useHead } from '@unhead/vue'
 import { Categorie, getCategories } from '@/api/categorie';
-// import SideBar from '@/components/SideBar/index.vue';
-import categorieVue from '@/components/categories/categorie.vue';
+import SideBar from '@/components/sideBar/index.vue';
+import categorieVue from '@/components/categories/index.vue';
 import { Base } from "@/layouts/index.vue";
 import { inject, ref } from 'vue';
 // const base = inject<Base>("Base");
@@ -57,12 +62,14 @@ useHead({
     }
 }
 
+.mainPageBody {
+    margin: 0 auto;
+    padding-top: 16px;
+}
 
 .mainPage {
     flex: 1;
     max-width: 770px;
-    width: 100%;
-    margin: 0 auto;
 }
 
 @media screen and (max-width: 1170px) {
@@ -84,7 +91,8 @@ useHead({
 .categorie-title {
     color: #c2c2c2;
     font-weight: 400;
-    &:hover{
+
+    &:hover {
         color: #908f8f;
     }
 }

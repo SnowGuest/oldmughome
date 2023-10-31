@@ -139,11 +139,9 @@ export interface MonfVote {
     createdDate: string;
 }
 
-export interface GetArticleParams {
+export interface GetArticleParams extends Pagination {
     sortField?: ArticleSortField;
     sortType?: "asc" | "desc";
-    page?: number;
-    pageSize?: number;
     id?: Article["id"];
 }
 /**

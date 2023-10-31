@@ -1,51 +1,41 @@
 <template>
     <ScrollView @load="articlePagination.next()">
 
-        <!-- <div class="flex main_page column items-center" v-show="base?.loading">
-        <Loading>加载中. . .</Loading>
-    </div> -->
-        <!-- v-show="!base?.loading" -->
-        <div class="main_page">
-            <!-- autoplay -->
-            <n-carousel show-arrow class="swiper">
-                <div class="swiper-image" v-for="image in  banners ">
-                    <img draggable="false" :src="image.imageUrl" alt="图片加载失败" />
-                    <div class="swiper-image-mask">
-                        <span>{{ image.description }}</span>
-                        <button>
-                            <RouterLink :to="image.linkUrl" target="_blank">
-                                查看详情
-                            </RouterLink>
-                        </button>
+        <div class="flex justify-center main_pageBox">
+            <div class="main_page">
+                <n-carousel show-arrow class="swiper">
+                    <div class="swiper-image" v-for="image in  banners ">
+                        <img draggable="false" :src="image.imageUrl" alt="图片加载失败" />
+                        <div class="swiper-image-mask">
+                            <span>{{ image.description }}</span>
+                            <button>
+                                <RouterLink :to="image.linkUrl" target="_blank">
+                                    查看详情
+                                </RouterLink>
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-            </n-carousel>
-            <!-- <List :error="pageError" :immediate-check="false" v-model:loading="pageLoading" :finished="pageFinished"
-            finished-text="没有更多了" @load="pageLoad"> -->
-            <ul class="list">
-                <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
-                    :user="users?.get(item.createdUserId)" :article="item"
-                    :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
-            </ul>
-            <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" />
-            <!-- <template>
-                <div class="list_error">
-                    <Empty image="network" description="请求数据失败" />
-                </div>
-            </template> -->
-            <!-- </List> -->
+                </n-carousel>
+
+                <ul class="list">
+                    <ArticleVue @like="setLike($event, item)" v-for=" [_, item]  in  articles" :key="item.id"
+                        :user="users?.get(item.createdUserId)" :article="item"
+                        :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
+                </ul>
+                <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" />
+
+            </div>
+            <SideBar />
         </div>
     </ScrollView>
-
-    <!-- <SideBar /> -->
 </template>
 
 <script lang="ts" setup>
 import { useHead } from '@unhead/vue'
 import { NCarousel } from "naive-ui"
 import ArticleVue from "@/components/article/item.vue";
-// import SideBar from '@/components/SideBar/index.vue';
+import SideBar from '@/components/sideBar/index.vue';
 import ScrollView from "@/components/scrollview/scrollView.vue"
 import { Article, ArticlesBody, getArticleList } from '@/api/post';
 
@@ -131,11 +121,13 @@ useHead({
 })
 </script>
 <style lang="scss" scoped>
+.main_pageBox {
+    width: 100%;
+    padding-top: 16px;
+}
+
 .main_page {
     flex: 1;
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 16px;
 }
 
 .main_page,

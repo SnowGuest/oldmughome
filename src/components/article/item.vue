@@ -2,7 +2,7 @@
 <template>
     <li class="article">
         <RouterLink :to="`/account/${user?.id}`" target="_blank" class="pr-3">
-            <n-avatar v-if="user?.avatarUrl" round :size="46" :src="user?.avatarUrl" alt="头像" />
+            <n-avatar v-if="user?.avatarUrl" round :size="46"   :src="user?.avatarUrl" alt="头像" />
             <div v-else-if="user" class="user-headers user_head" :style="`background-color:${getColor()}`">
                 {{ user.nickName[0] }}
             </div>
@@ -28,7 +28,7 @@
                     {{ article.introduction }}
                 </div>
                 <div class="aricleContent-Body-image" v-if="article.headerImage">
-                    <img :src="article.headerImage" alt="帖子图片">
+                    <n-image lazy class="imgInstan" :src="article.headerImage" alt="帖子图片" />
                 </div>
             </RouterLink>
             <time class="creat_time">发布于 · {{ createTime }}</time>
@@ -61,7 +61,6 @@ import dayjs from "dayjs"
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { Categorie } from "@/api/categorie";
-import { useRouter } from "vue-router"
 import { ref, computed } from "vue";
 import { useMessage } from "naive-ui"
 const message = useMessage()
@@ -80,8 +79,8 @@ const emit = defineEmits<Emit>()
 const prop = withDefaults(defineProps<Prop>(), {
     attentionShow: true
 });
-/** @description 当前用户是否点赞了*/
-const userLike = ref<boolean>(false)
+// /** @description 当前用户是否点赞了*/
+// const userLike = ref<boolean>(false)
 /** @description 点赞的人数 */
 const likeCount = ref(prop.article.likeCount);
 
@@ -192,7 +191,7 @@ function getColor() {
             width: 200px;
             margin-left: auto;
 
-            img {
+            .imgInstan {
                 border-radius: 8px;
                 object-fit: cover;
                 max-width: 100%;

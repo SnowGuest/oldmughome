@@ -4,10 +4,10 @@
         <h3 class="categories-title">推荐分区</h3>
         <ul class="categories">
             <li class="categorie center" v-for="item in categories" :key="item.id">
-                <NuxtLink :to="`/categorie/${item.id}`" class="column center" target="_blank" rel="bookmark">
+                <RouterLink :to="`/categorie/${item.id}`" class="column center" target="_blank" rel="bookmark">
                     <i :style="{ fontSize: '22px', color: item.color }" :class="item.icon"></i>
                     <span class="categorie-text">{{ item.name }}</span>
-                </NuxtLink>
+                </RouterLink>
             </li>
         </ul>
     </div>

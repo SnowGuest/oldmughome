@@ -32,6 +32,9 @@ dependencies:
   sass:
     specifier: ^1.69.4
     version: 1.69.4
+  unicode-emoji:
+    specifier: ^2.4.0
+    version: 2.4.0
   universal-cookie:
     specifier: ^6.1.1
     version: 6.1.1
@@ -2844,6 +2847,10 @@ packages:
       '@unhead/schema': 1.8.0
       '@unhead/shared': 1.8.0
       hookable: 5.5.3
+    dev: false
+
+  /unicode-emoji@2.4.0:
+    resolution: {integrity: sha512-hm02dAntJJPL06gCyj7RM5qzyIXJJr4buSs+Z65ZFhL6D7/anbgG9JKCemJpcVRone95w0jPyGDA+3abJvHVIw==}
     dev: false
 
   /unimport@3.4.0:
