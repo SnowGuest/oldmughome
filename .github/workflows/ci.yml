@@ -1,50 +1,32 @@
 name: ci
-on: 
-  push:  
-    branches:
-    - master
+on:
+  push:
 jobs:
-  deploy:
-    runs-on: ubuntu-latest 
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [15]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+    - name: Build docs
+      run: pnpm run build
 
-      - uses: pnpm/action-setup@v2 
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 7
-          run_install: false
-      
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build docs
-        run: pnpm -F docs build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
           github_token: ${{ secrets.RAN_ACTIONS_TOKEN }}
           exclude_assets: ''
           publish_dir: dist
+
