@@ -24,7 +24,9 @@ const router = createRouter({
       }, {
         path: "article/:id",
         component: () => import("@/pages/article/index.vue")
-
+      }, {
+        path: "bof/2023",
+        component: () => import("@/pages/bof/2023.vue")
       }
         // {
         //   path: "monf2023",

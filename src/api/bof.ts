@@ -1,6 +1,6 @@
-import { Categorie } from "./categorie";
-import { Comment, GetArticleParams } from "./post";
-import { User } from "./user";
+import type { Categorie } from "./categorie";
+import type { Comment } from "./post";
+import type { User } from "./user";
 import { request } from "@/utils/request"
 export interface Bof2023ApplyParams {
     teamName: string,
@@ -18,6 +18,7 @@ export interface Bof2023ApplyMember {
 
 
 export interface Bof {
+    No: number;
     bilibiliLink: string;
     chartScoreAvg: number;
     chartScoreCount: number;

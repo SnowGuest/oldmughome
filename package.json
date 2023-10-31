@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@unhead/vue": "^1.8.0",
+    "@visactor/vchart": "^1.5.4",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
     "axios": "^1.6.0",

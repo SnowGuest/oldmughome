@@ -156,7 +156,7 @@ useHead({
     position: relative;
 
     button {
-        padding: 5px 20px;
+        padding: 8px 20px;
         border-radius: 5px;
         border: none;
         background: linear-gradient(135deg, #6e8efb, #a777e3);
@@ -190,6 +190,7 @@ useHead({
         padding: 0 0 11px 10%;
 
         span {
+            margin-left: 20px;
             margin-right: 24px;
             margin-bottom: 5px;
         }
