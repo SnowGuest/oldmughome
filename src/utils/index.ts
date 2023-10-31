@@ -1,6 +1,6 @@
 import type { Article, Pagination } from "@/api/post";
 import type { User } from "@/api/user";
-import { reactive } from "vue-demi"
+import { reactive } from "vue"
 import { type UploadFileInfo } from 'naive-ui'
 
 import { uploaderFile } from "@/api/file";
