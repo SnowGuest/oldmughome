@@ -126,19 +126,6 @@ export interface useApiToPaginationInstance<T = null> {
     reload: (config?: Record<string, any>, clear?: boolean) => Promise<void>;
     reset: () => Promise<void>;
 }
-
-// export function getDefaultPInstance<V extends Record<string, any>, K extends keyof V>() {
-//     type ListInstance = Map<V[K], V>
-//     const list = ref<ListInstance>(new Map());
-//     const r: useApiToPaginationInstance<ListInstance> = {
-//         status: ref("loading"),
-//         list,
-//         next: async () => { },
-//         reload: async () => { },
-//         reset: async () => { }
-//     }
-//     return r
-// }
 export function useApiToPagination<T extends Record<string, any>, R extends Record<string, any>, K extends keyof T>(request: (...args: any) => Promise<R>, config: Pagination & Record<string, any>, key: K, afterFn?: (data: R) => T[]): useApiToPaginationInstance<Map<T[K], T>> {
     type ListInstance = Map<T[K], T>;
     const sourceConfig = JSON.parse(JSON.stringify(config));
@@ -147,10 +134,7 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
     const list = ref<ListInstance>(new Map());
     const loadList = async () => {
         try {
-
-
             let result = await resultPromise;
-            console.log(result, "我是result")
             let data: T[] = []
             if (afterFn) {
                 data = afterFn(result)
@@ -165,7 +149,7 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
                 list.value.set(e[key], e)
             })
         } catch (error) {
-            console.log("我是error", error)
+            console.log( error)
         }
     }
     loadList()
