@@ -39,6 +39,7 @@ export interface Pagination {
 export interface ArticleParams extends Pagination {
     userid?: number | string;
     sort?: string | number;
+    content?: string;
     categorieId?: string | number;
 }
 

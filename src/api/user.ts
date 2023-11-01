@@ -58,8 +58,15 @@ export function getUserInfo(id: string | number) {
     return request<User>(`user/${id}`, {
         method: "GET",
     });
-
 }
+
+export function getSearchUsers(params: Record<string, any>) {
+    return request<User[]>(`user`, {
+        method: "GET",
+        params
+    });
+}
+
 
 export function login(data: LoginParams) {
     return request<LoginBody>("account/login", {

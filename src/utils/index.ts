@@ -1,6 +1,6 @@
 import type { Article, Pagination } from "@/api/post";
 import type { User } from "@/api/user";
-import { reactive } from "vue"
+import { nextTick, reactive } from "vue"
 import { type UploadFileInfo } from 'naive-ui'
 
 import { uploaderFile } from "@/api/file";
@@ -124,12 +124,12 @@ export interface useApiToPaginationInstance<T = null> {
     list: Ref<T>;
     next: (page?: number, config?: Record<string, any>) => Promise<void>;
     reload: (config?: Record<string, any>, clear?: boolean) => Promise<void>;
-    reset: () => Promise<void>;
+    reset: (config?: Record<string, any>) => Promise<void>;
 }
 export function useApiToPagination<T extends Record<string, any>, R extends Record<string, any>, K extends keyof T>(request: (...args: any) => Promise<R>, config: Pagination & Record<string, any>, key: K, afterFn?: (data: R) => T[]): useApiToPaginationInstance<Map<T[K], T>> {
     type ListInstance = Map<T[K], T>;
     const sourceConfig = JSON.parse(JSON.stringify(config));
-    let newConifg: Pagination = sourceConfig
+    let newConifg: Pagination = JSON.parse(JSON.stringify(sourceConfig))
     let resultPromise = request(newConifg);
     const list = ref<ListInstance>(new Map());
     const loadList = async () => {
@@ -149,7 +149,7 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
                 list.value.set(e[key], e)
             })
         } catch (error) {
-            console.log( error)
+            console.log(error)
         }
     }
     loadList()
@@ -159,21 +159,27 @@ export function useApiToPagination<T extends Record<string, any>, R extends Reco
         async next(page, config) {
             if (returnData.status.value !== "ready") return;
             if (page) { newConifg.page = page; }
-            else newConifg.page = parseInt(`${newConifg.page}`) + 1;
-            Object.assign(newConifg, config)
-            await returnData.reload(undefined, false)
+            else { newConifg.page = parseInt(`${newConifg.page}`) + 1; }
+            if (config) Object.assign(newConifg, config);
+            returnData.status.value = "loading";
+            await nextTick();
+            console.log(newConifg, '新config')
+            resultPromise = request(newConifg);
+            await loadList()
         },
         async reload(config, clear = true) {
             returnData.status.value = "loading";
-            newConifg = sourceConfig
+            newConifg = JSON.parse(JSON.stringify(sourceConfig))
             if (config) Object.assign(newConifg, config);
             if (clear) list.value.clear()
             resultPromise = request(newConifg);
             await loadList()
         },
-        async reset() {
+        async reset(config) {
             list.value.clear()
-            await returnData.next(0);
+            returnData.status.value = "ready";
+            await nextTick()
+            await returnData.next(1, config);
         }
     }
 

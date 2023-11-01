@@ -2,7 +2,7 @@
     <div class="mug-headerBody">
         <pcHeader />
         <moblieHeader />
-
+        <Login />
         <!-- {{ $t("component.header.frontPage") }} -->
     </div>
 </template>
@@ -14,6 +14,7 @@ import type { App } from "@/App.vue"
 const app = inject<App>("app");
 import pcHeader from "./pcHeader.vue";
 import moblieHeader from "./moblieHeader.vue";
+import Login from "./login.vue";
 
 function checklocal() {
     app?.setLocale('en-us')

@@ -41,6 +41,8 @@
                 </RouterLink>
                 <div :class="{ noLiked: !article.relations.isLiked }"
                     class="flex  items-center justify-between control_model" @click.prevent="likeThis">
+                    <!-- <HeartIcon v-show="article.relations.isLiked" /> -->
+                    <!-- <HeartSolidIcon style="color:#fb0101" v-show="!article.relations.isLiked" /> -->
                     <box-icon v-show="article.relations.isLiked" name='heart'></box-icon>
                     <box-icon v-show="!article.relations.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
                     <span>{{ likeCount }}</span>
@@ -55,7 +57,9 @@
 </template>
 
 <script lang="ts" setup>
-// import { BeakerIcon } from '@heroicons/vue/24/solid'
+
+// import { HeartIcon } from '@heroicons/vue/24/outline'
+// import { HeartIcon as HeartSolidIcon } from '@heroicons/vue/20/solid'
 // import { GameControllerOutline, GameController } from '@vicons/fluent'
 import type { User } from "@/api/user";
 import ArticleTag from "@/components/article/tag.vue"
@@ -265,8 +269,12 @@ function getColor() {
 
 .control_model {
     width: 45px;
-    
     margin-right: 30px;
+    font-size: 40px;
+
+    span {
+        font-size: 16px;
+    }
 }
 
 .control_model_like {

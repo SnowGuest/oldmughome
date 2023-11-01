@@ -10,12 +10,12 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
   },
   "dependencies": {
-    "@heroicons/vue": "^2.0.18",
     "@unhead/vue": "^1.8.0",
     "@visactor/vchart": "^1.5.4",
     "@vueuse/core": "^10.5.0",
     "@vueuse/integrations": "^10.5.0",
     "axios": "^1.6.0",
+    "boxicons": "^2.1.4",
     "dayjs": "^1.11.10",
     "md-editor-v3": "^4.8.2",
     "normalize.css": "^8.0.1",

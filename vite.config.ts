@@ -14,7 +14,7 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => tag.includes('box-icons')
+          isCustomElement: (tag) => tag.includes('box-icon')
         }
       }
     }),
