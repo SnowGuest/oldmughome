@@ -11,7 +11,13 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 export default defineConfig({
   base:"/MugHome/",
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('box-icons')
+        }
+      }
+    }),
     vueJsx(),
     UnoCSS(),
     AutoImport({
