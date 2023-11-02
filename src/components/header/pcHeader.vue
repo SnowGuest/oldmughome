@@ -5,7 +5,7 @@
             <img class="logoText" src="@/assets/image/logoText.png" alt="">
         </nav>
         <n-tabs :value="checkValue">
-            <n-tab v-for="(e, i) in menus" :key="e" :name="e.path">
+            <n-tab v-for="(e, i) in menus" :key="e.path" :name="e.path">
                 <RouterLink :to="e" class="mug_pc-header-menu"
                     :class="{ 'mug_pc-header-menu-check': checkValue === e.path }">{{
                         $t(`component.header.menu[${i}]`) }}</RouterLink>
@@ -13,7 +13,9 @@
         </n-tabs>
         <i18n />
         <search />
-        <avatar userMode="header" />
+        <!-- <RouterLink :to="`/account/${}`"> -->
+        <avatar userMode="header" :size="62" />
+        <!-- </RouterLink> -->
     </header>
 </template>
 

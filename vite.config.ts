@@ -9,7 +9,7 @@ import UnoCSS from 'unocss/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 // https://vitejs.dev/config/
 export default defineConfig({
-  base:"/MugHome/",
+  base: "/MugHome/",
   plugins: [
     vue({
       template: {
@@ -34,7 +34,8 @@ export default defineConfig({
       ]
     }),
     Components({
-      resolvers: [NaiveUiResolver()]
+      resolvers: [NaiveUiResolver()],
+      dts: true
     })
   ],
 

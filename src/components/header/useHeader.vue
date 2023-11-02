@@ -2,24 +2,30 @@
     <div class="mug-headerBody">
         <pcHeader />
         <moblieHeader />
-        <Login />
+        <Login ref="loginRef" />
         <!-- {{ $t("component.header.frontPage") }} -->
     </div>
 </template>
 
 <script lang="ts" setup>
-import { getBannersssss } from "@/api/index"
-import { inject } from 'vue';
+import { inject, provide, ref } from 'vue';
 import type { App } from "@/App.vue"
 const app = inject<App>("app");
 import pcHeader from "./pcHeader.vue";
 import moblieHeader from "./moblieHeader.vue";
-import Login from "./login.vue";
-
+import Login, { type LoginRef } from "./login.vue";
+export interface HeaderInject {
+    login: () => void;
+}
+const loginRef = ref<LoginRef>()
+provide<HeaderInject>("header", {
+    login() {
+        loginRef.value?.show()
+    }
+})
 function checklocal() {
     app?.setLocale('en-us')
 }
-
 </script>
 <style lang="scss" scoped>
 .mug-headerBody {

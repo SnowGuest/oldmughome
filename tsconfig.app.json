@@ -17,6 +17,7 @@
         "./src/*"
       ]
     },
+    "types": ["naive-ui/volar"],
     "moduleResolution": "Node"
   }
 }

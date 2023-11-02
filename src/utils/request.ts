@@ -63,8 +63,9 @@ const useMugFetch = axios.create({
     baseURL,
     timeout: 6000,
 });
-axios.interceptors.request.use((config) => {
-    const { logged, resetLogged } = useUserStore()
+useMugFetch.interceptors.request.use((config) => {
+    const { logged, resetLogged } = useUserStore();
+    console.log(logged,'xxxxxxx')
     if (logged.login && logged.token && Date.now() < parseInt(`${logged.exp}000`) - 1000) {
         Reflect.set(config.headers, 'Authorization', `Bearer ${logged.token}`)
     } else {

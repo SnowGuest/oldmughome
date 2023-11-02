@@ -17,6 +17,7 @@
     "axios": "^1.6.0",
     "boxicons": "^2.1.4",
     "dayjs": "^1.11.10",
+    "default-passive-events": "^2.0.0",
     "md-editor-v3": "^4.8.2",
     "normalize.css": "^8.0.1",
     "pinia": "^2.1.7",

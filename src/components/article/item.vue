@@ -43,8 +43,8 @@
                     class="flex  items-center justify-between control_model" @click.prevent="likeThis">
                     <!-- <HeartIcon v-show="article.relations.isLiked" /> -->
                     <!-- <HeartSolidIcon style="color:#fb0101" v-show="!article.relations.isLiked" /> -->
-                    <box-icon v-show="article.relations.isLiked" name='heart'></box-icon>
-                    <box-icon v-show="!article.relations.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+                    <box-icon v-show="!article.relations.isLiked" name='heart' class="xxxxxxxxxxxxxxx"></box-icon>
+                    <box-icon v-show="article.relations.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
                     <span>{{ likeCount }}</span>
                 </div>
                 <div class="aricle_footer">

@@ -33,7 +33,10 @@ const router = createRouter({
       }, {
         path: "monf/:id",
         component: () => import("@/pages/monf/article.vue")
-      }
+      }, {
+        path: "/account/:id",
+        component: () => import("@/pages/account/index.vue")
+      },
       ]
     },
 
