@@ -2,8 +2,8 @@
 <template>
     <div class="card">
         <h3 class="toptip">账户安全</h3>
-        <Divider />
-        <Form :disabled="loading">
+        <n-divider />
+        <!-- <Form :disabled="loading">
             <Field readonly v-model="info.email" name="邮箱" label="邮箱">
                 <template #button>
                     <span class="linkText" @click="updateEmailShow = true">修改邮箱</span>
@@ -15,9 +15,9 @@
                 </template>
             </Field>
 
-        </Form>
+        </Form> -->
     </div>
-    <Popup v-model:show="updateEmailShow">
+    <n-modal v-model:show="updateEmailShow">
         <div class="forget_box">
             <h4 class="foget_title">重置邮箱</h4>
             <n-form-item path="account" ref="formItemRef">
@@ -43,15 +43,15 @@
             </Form> -->
             <p class="forget_text"><span style="color:red;">*</span> 我们会将一封验证邮件发送到你的新邮箱内,请耐心等待。</p>
         </div>
-    </Popup>
+    </n-modal>
 </template>
 
 <script lang="tsx" setup>
 // import myFieldVue from "@/components/authorize/myField.vue";
 import { sendResetEmail } from "@/api/reset";
-import { FormItemInst, FormRules, useDialog } from "naive-ui";
+import { FormItemInst, FormRules, useDialog, useMessage, useNotification } from "naive-ui";
 import { storeToRefs } from "pinia";
-import { Popup, Divider, Form, Field, Button, type FieldRule, showFailToast, showSuccessToast } from "vant";
+// import { Popup, Divider, Form, Field, Button, type FieldRule, showFailToast, showSuccessToast } from "vant";
 import { updateUserInfo, User } from "@/api/user";
 import { useUserStore } from "@/stores/user";
 import { reactive, ref } from "vue";
@@ -90,6 +90,7 @@ const info = reactive<Record<string, any>>({
     email: ""
 });
 const loading = ref(false)
+const notification = useNotification()
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore)
 Object.assign(info, JSON.parse(JSON.stringify(userInfo.value)));
@@ -103,7 +104,7 @@ async function onForgetPass() {
             if (code === 0) {
                 email.value = ""
                 updateEmailShow.value = false
-                showSuccessToast("邮件发送成功，请注意查收");
+                notification.success({ title: "成功", content: "邮件发送成功，请注意查收" });
                 updateEmailLoading.value = false
             }
         }
