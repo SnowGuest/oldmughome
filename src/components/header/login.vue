@@ -1,5 +1,4 @@
 <template>
-    <n-model></n-model>
 </template>
 
 <script lang="ts" setup>
