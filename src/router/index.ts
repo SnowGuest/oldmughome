@@ -3,7 +3,7 @@ import Layout from "@/layouts/index.vue"
 import Home from "@/pages/home/index.vue"
 
 const router = createRouter({
-  history:  createWebHashHistory(import.meta.env.BASE_URL) //createWebHistory(import.meta.env.BASE_URL),
+  history:  createWebHashHistory(import.meta.env.BASE_URL), //createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
