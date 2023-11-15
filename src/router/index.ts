@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory,createWebHashHistory  } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import Layout from "@/layouts/index.vue"
 import Auth from "@/layouts/authorize.vue"
 
 import Home from "@/pages/home/index.vue"
 
 const router = createRouter({
-  history:  createWebHashHistory(import.meta.env.BASE_URL), //createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL), //createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
@@ -36,7 +36,7 @@ const router = createRouter({
           path: "monf/:id",
           component: () => import("@/pages/monf/article.vue")
         }, {
-          path: "/account/:id",
+          path: "account/:id",
           component: () => import("@/pages/account/index.vue")
         }, {
           path: "reset/account",
@@ -45,6 +45,12 @@ const router = createRouter({
           path: "reset/email",
           component: () => import("@/pages/reset/email.vue")
         }, {
+          path: "creator",
+          component: () => import("@/pages/creator/index.vue")
+        }, {
+          path: "compile/:id",
+          component: () => import("@/pages/compile/index.vue")
+        },{
           path: "error",
           component: () => import("@/error.vue")
         },

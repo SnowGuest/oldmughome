@@ -38,8 +38,10 @@ const themeOverrides = {
         <n-loading-bar-provider>
             <n-notification-provider>
                 <n-message-provider>
-                    <useAppload />
-                    <RouterView />
+                    <n-dialog-provider>
+                        <useAppload />
+                        <RouterView />
+                    </n-dialog-provider>
                 </n-message-provider>
             </n-notification-provider>
         </n-loading-bar-provider>
