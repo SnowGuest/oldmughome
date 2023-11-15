@@ -19,6 +19,10 @@
                         登录
                     </n-button>
                 </n-form-item>
+                <div class="flex justify-between footer">
+                    <RouterLink target="_blank" to="">忘记密码?</RouterLink>
+                    <RouterLink target="_blank" to="/register">注册新账户</RouterLink>
+                </div>
             </n-form>
         </div>
     </n-modal>
@@ -124,5 +128,9 @@ async function submit() {
             height: 150%;
         }
     }
+}
+.footer{
+    color: rgb(161, 161, 161);
+    font-size: 15px;
 }
 </style>

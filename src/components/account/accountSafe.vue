@@ -60,6 +60,7 @@ const formItemRef = ref<FormItemInst>()
 interface Props {
     self: boolean
 }
+
 const passwordLabel = ref("********************")
 const updateEmailShow = ref(false);
 const updateEmailLoading = ref(false)
