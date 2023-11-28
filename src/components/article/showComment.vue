@@ -5,7 +5,7 @@
             <h2 v-if="isVote && showVote">打分</h2>
             <h2 v-else>回复</h2>
 
-            <ul class="selectTopTip align-center" :class="{ disabled: loading }">
+            <ul class="selectTopTip items-center" :class="{ disabled: loading }">
 
                 <n-popover trigger="click" placement="top">
                     <template #trigger>
@@ -17,7 +17,7 @@
                         <n-tabs animated>
                             <n-tab-pane :tab="v[0].emoji" v-for="(v, k) in emojis" :name="k" :title="v[0].emoji">
                                 <ul class="emojiGrid">
-                                    <li @click="setEmoji(item)" v-for="item in v" class="center">
+                                    <li @click="setEmoji(item)" v-for="item in v" class="select-none flex justify-center items-center">
                                         {{ item.emoji }}
                                     </li>
                                 </ul>
@@ -195,7 +195,7 @@ async function sendComment() {
     max-width: 90vw;
     width: 450px;
     border-radius: 8px;
-    // background-color: var(--mug-card-bg);
+    background-color: var(--mug-card-bg);
     padding: 36px;
     color: var(--mug-text);
 
@@ -265,7 +265,7 @@ async function sendComment() {
         border: none;
         background-color: transparent;
         resize: none;
-
+        outline: none;
         &::-webkit-scrollbar {
             width: 6px;
         }

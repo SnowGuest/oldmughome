@@ -21,13 +21,12 @@
                     </div>
                 </div>
                 <h2 class="title">{{ article?.title }}</h2>
-                <MdPreview @get-catalog="showCatalog = Array.isArray($event) && $event.length > 0"
-                    :editorId="markDownState.id" class="articleContent" :model-value="article?.content" preview
-                    preview-only />
+                <MdPreview @get-catalog="showCatalog = Array.isArray($event) && $event.length > 0" editorId="preview-md"
+                    class="articleContent" :model-value="article?.content" preview preview-only />
                 <ArticleTag />
                 <div class="lockUser " id="comments" ref="commentsDom">{{ article?.viewCount }}人浏览
                     <n-popselect :options="actions" size="medium" @update:value="">
-                        <box-icon name='dots-horizontal-rounded'  class="moreMenu" ></box-icon>
+                        <box-icon name='dots-horizontal-rounded' class="moreMenu"></box-icon>
                     </n-popselect>
                 </div>
                 <div class="likeUsers flex justify-center items-center flex column" v-show="article && likeUsers.size > 0">
@@ -52,7 +51,7 @@
                             :class="{ CommentTypeActive: searchParams.sortField === ArticleSortField.createdDate }">时间</li>
                     </ol>
                 </div>
-                <comment @comment="ShowModel" :users="users" :comments="comments" />
+                <comment @comment="ShowModel" :users="users" :comments="comments" :status="status" />
             </div>
             <aside class="cardFooter flex items-center">
                 <div class="openInput " @click="ShowModel(article?.id, false)">说点什么吧~</div>
@@ -62,8 +61,11 @@
                     <div class="iconSum">{{ comments.size }}</div>
                 </div>
                 <div class="flex justify-between column likeIconBox" @click="like_this">
-                    <box-icon v-show="article?.relations?.isLiked" name='heart'></box-icon>
-                    <box-icon v-show="!article?.relations?.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+
+                    <box-icon v-show="!article?.relations?.isLiked" name='heart' />
+                    <box-icon v-show="article?.relations?.isLiked" name='heart' type='solid' color='#fb0101' />
+
+
 
 
                     <div class="iconSum">{{ article?.likeCount }}</div>
@@ -104,7 +106,7 @@
 
             <div class="newcard" style="padding:16px" v-if="showCatalog">
                 <h3>目录</h3>
-                <MdCatalog class="postCatalog" :editorId="markDownState.id" scrollElement="#pageBody" />
+                <MdCatalog class="postCatalog" editorId="preview-md" scrollElement=".ScrollView " />
             </div>
         </SideBar>
         <ShowComment :showVote="showVote" :is-vote="isVote" @success="commentSuccess" :post-id="selectComment.postId"
@@ -123,7 +125,7 @@ import comment from "@/components/comment/comment.vue"
 import { storeToRefs } from "pinia";
 import { type User, followUserApi, unfollowUserApi } from '@/api/user';
 import { type Comment, ArticleSortField, like } from '@/api/post';
-import dayjs from 'dayjs';
+import dayjs from "dayjs/esm";
 import ShowComment from '@/components/article/showComment.vue';
 import { useUserStore } from '@/stores/user';
 import { init } from "@/components/article/preload"
@@ -158,13 +160,13 @@ const data = init(id)
 const { article,
     searchParams,
     selectComment,
-    markDownState,
     likeUsers,
     isVote,
     userJoinDay,
     user,
     users,
-    articlePagination: { next, list: comments, reload },
+
+    articlePagination: { next, list: comments, reload, status },
 } = data;
 // const searchParams = reactive<GetArticleParams>({
 //     sortField: ArticleSortField.createdDate,

@@ -3,15 +3,15 @@
         <div class="userBg">
             <background :src="user?.userCoverUrl" />
             <div class="frosted_glassBox">
-                <div class="Editor center" v-if="self">
-                    <Icon color="#FFFFFF" name="ri:edit-2-line"></Icon>
+                <div class="Editor flex justify-center items-center" v-if="self">
+                    <box-icon name='edit-alt' color="#FFFFFF" style="width:20px;height:20px"></box-icon>
                     <span>编辑</span>
                     <input type="file" class="uploadCoverBg" @change="uploadCoverBg" accept="image/*">
                 </div>
             </div>
         </div>
-        <div class="align-center userHeader">
-            <n-image v-if="user?.avatarUrl" round width="120" height="120" :src="user?.avatarUrl" />
+        <div class="items-center flex userHeader">
+            <n-avatar v-if="user?.avatarUrl" round :size="120" :src="user?.avatarUrl" />
             <div v-else class="userHeaderColor" :style="`background-color:${getColor()}`">
                 {{ user?.nickName[0] }}
             </div>
@@ -21,16 +21,16 @@
             </div>
         </div>
 
-        <ul class="align-center userDetali">
-            <li class="column center">
+        <ul class="flex items-center userDetali">
+            <li class="flex items-center justify-center flex-col">
                 <span class="sum">{{ user?.postCount || "0" }}</span>
                 <span class="sumText">帖子</span>
             </li>
-            <li class="column center">
+            <li class="flex items-center justify-center flex-col">
                 <span class="sum"> {{ user?.followerCount || "0" }}</span>
                 <span class="sumText">粉丝</span>
             </li>
-            <li class="column center" v-if="self">
+            <li class="flex items-center justify-center flex-col" v-if="self">
                 <span class="sum">{{ user?.points || "0" }}</span>
                 <span class="sumText">我的积分</span>
             </li>
@@ -50,63 +50,31 @@
                     </template>
                 </List>
             </Tab> -->
+
         <n-tabs v-model:active="active" shrink>
-            <n-tab name="post">
+            <n-tab-pane name="帖子">
                 <ul class="list">
                     <ArticleVue :attentionShow="!self" v-for=" [_, item]  in  articles" :key="item.id"
                         :user="users?.get(item.createdUserId)" :article="item"
                         :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
                 </ul>
                 <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" />
-
-            </n-tab>
-
+            </n-tab-pane>
         </n-tabs>
-
-        <!-- <ul class="list">
-            <ArticleVue :attentionShow="!self" v-for=" [_, item]  in  articles" :key="item.id"
-                :user="users?.get(item.createdUserId)" :article="item"
-                :categorie="item.relations ? item.relations.categoryIds?.map(e => e !== null ? categories.get(e) : undefined).filter(e => e) : []" />
-        </ul>
-        <ListStatus :status="articlePagination.status.value" :p-inst="articlePagination" /> -->
-
-        <!-- <Tab title="MONF2023" title-class="TabTitle">
-                <List finished-text="没有更多了" :immediate-check="false" v-model:loading="articleLoading"
-                    :finished="articleFinished" :error="articleError" error-text="请求数据失败" @load="onArticleLoad">
-                    <ul class="List">
-                        <ArticleVue :attentionShow="!self" v-for="[_, item] in articles" :key="item.id"
-                            :user="users?.get(item.createdUserId)" :article="item" />
-                    </ul>
-                    <template #error>
-                        <Empty image="network" description="请求数据失败,点击重试"></Empty>
-                    </template>
-                </List>
-            </Tab> -->
-        <!-- <Tab title="评论" title-class="TabTitle">
-                <List finished-text="没有更多了" :immediate-check="false" v-model:loading="commentLoading"
-                    :finished="commentFinished" @load="onCommentLoad">
-                    <ul class="List">
-                    </ul>
-                    <template #error>
-                        <Empty image="network" description="请求数据失败,点击重试"></Empty>
-                    </template>
-                </List>
-            </Tab> -->
-        <!-- </Tabs> -->
     </div>
 </template>
 
 <script lang="ts" setup>
 
 // import { Image, Tabs, Tab, List, Empty, showSuccessToast } from "vant"
-import SideBar from '@/components/sideBar/index.vue';
+import ListStatus from '@/components/listStatus.vue';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from "pinia";
 import ArticleVue from "@/components/article/item.vue";
 import { getUserInfo, updateUserInfo, User } from "@/api/user";
 import { Article, ArticlesBody, getArticleList } from "@/api/post";
 import background from "@/components/background.vue";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { getUserMap, useApiToPagination } from "@/utils";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
@@ -120,19 +88,6 @@ interface Props {
     self: boolean
 }
 const props = defineProps<Props>()
-
-// const articles = ref<Article[]>([])
-// const articles = ref<Map<Article["id"], Article>>(new Map());
-const comments = ref([])
-async function onArticleLoad() {
-    page.page++
-    await onLoadArticle(users)
-}
-function onCommentLoad() { }
-
-const articleLoading = ref(false)
-const articleFinished = ref(false)
-const articleError = ref(false)
 
 
 const user = ref<User | null>(null);
@@ -150,47 +105,6 @@ const page = {
     postUserId: route.params.id,
 }
 
-
-
-
-// async function onLoadArticle(userMap?: Map<number, User>) {
-//     try {
-//         if (process.client) articleLoading.value = true;
-//         console.log(page)
-//         const { data, error, refresh, execute } = await getArticleList("account/articles", {
-//             ...page
-//         })
-//         if (!data.value) return;
-//         if (data.value?.data.post.length <= 0) {
-//             articleFinished.value = true
-//         } else {
-//             // articles.value = data.value.data.post
-//             data.value.data.post.forEach(e => {
-//                 if (typeof e.relations === "undefined") {
-//                     e.relations = {
-//                         postLikeUserId: [],
-//                         isLiked: false,
-//                         categoryIds: [0, null],
-//                         commentIds: [],
-//                     }
-//                 }
-//                 if (typeof e.relations.isLiked !== "boolean") {
-//                     e.relations.isLiked = false
-//                 }
-//                 articles.value.set(e.id, e)
-//             })
-//             return getUserMap(data.value.data.includes.users, userMap);
-//         }
-
-//     } catch (error) {
-//         if (error instanceof Error) {
-//             articleError.value = true
-//             console.log(error)
-//         }
-//     } finally {
-//         articleLoading.value = false
-//     }
-// }
 const users = new Map<number, User>()
 async function onLoadUserInfo() {
     if (typeof route.params.id === "string") {
@@ -226,19 +140,12 @@ async function uploadCoverBg(e: Event) {
     }
 
 }
-// async function init() {
-//     const [users, _] = await Promise.all([onLoadArticle(), onLoadUserInfo()])
-
-//     return {
-//         users,
-//     }
-// }
-// const { users } = await init();
 onLoadUserInfo()
 function onLoadArticle(userMap?: typeof users) {
     return useApiToPagination<Article, InstanceBody<ArticlesBody>, "id">(getArticleList, {
         page: 1,
-        pageSize: 10
+        pageSize: 10,
+        postUserId: route.params.id,
     }, "id", ({ data: { post, includes } }) => {
         getUserMap(includes.users, userMap);
         includes.categories.forEach(e => {

@@ -1,26 +1,37 @@
 <template>
-
     <ScrollView>
-        <div class="todo-menu" @click="moblieShow = !moblieShow">
-            <Icon size="30" name="material-symbols:checklist"></Icon>
+        <div class="flex mainPageScroll justify-center">
+            <aside v-if="self" class="affixElement">
+                <ul class="leftMenu">
+                    <li @click="toPage(item)" v-for="item in menus" :class="{ menuCheck: item.id === checkMenu }">{{
+                        item.label
+                    }}
+                    </li>
+                </ul>
+            </aside>
+            <div class="todo-menu" @click="moblieShow = !moblieShow">
+                <Icon size="30" name="material-symbols:checklist"></Icon>
+            </div>
+            <n-modal v-model:show="moblieShow" style="top:200px;border-radius: 0px 8px 8px 0; ">
+                <ul class="leftMenu" style="margin-right: 0px;">
+                    <li @click="toPage(item)" v-for="item in menus" :class="{ menuCheck: item.id === checkMenu }">{{
+                        item.label
+                    }}
+                    </li>
+                </ul>
+            </n-modal>
+            <div class="rightPage">
+                <KeepAlive>
+                    <component :self="self" :is="menu"></component>
+                </KeepAlive>
+            </div>
+            <SideBar v-if="!self" />
         </div>
-        <n-modal v-model:show="moblieShow" style="top:200px;border-radius: 0px 8px 8px 0; ">
-            <ul class="leftMenu" style="margin-right: 0px;">
-                <li @click="toPage(item)" v-for="item in menus" :class="{ menuCheck: item.id === checkMenu }">{{ item.label
-                }}
-                </li>
-            </ul>
-        </n-modal>
-        <div class="rightPage">
-            <KeepAlive>
-                <component :self="self" :is="menu"></component>
-            </KeepAlive>
-        </div>
-        <SideBar v-if="!self" />
     </ScrollView>
 </template>
 
 <script lang="ts" setup>
+import ScrollView from "@/components/scrollview/scrollView.vue"
 import SideBar from '@/components/sideBar/index.vue';
 import homeVue from "@/components/account/home.vue"
 import avatarVue from "@/components/account/avatar.vue"
@@ -38,7 +49,8 @@ const menus = [
     { id: 2, component: myInfoVue, label: "我的信息" },
     { id: 3, component: avatarVue, label: "我的头像" },
     { id: 5, component: accountSafeVue, label: "账户安全" },
-    { id: 4, component: thirdPartyVue, label: "第三方账号" }] as const
+    // { id: 4, component: thirdPartyVue, label: "第三方账号" }
+] as const
 const checkMenu = ref<typeof menus[number]["id"]>(1);
 const route = useRoute()
 const userStore = useUserStore();
@@ -60,6 +72,25 @@ function toPage(e: typeof menus[number]) {
 
 </script>
 <style lang="scss" scoped>
+.affixElement{
+    position: sticky;
+    top: 16px;
+
+    align-self: flex-start;
+
+}
+@media screen and (max-width: 768px) {
+
+    .mainPageScroll {
+        max-width: 100vw;
+    }
+}
+
+.mainPageScroll {
+    margin: 0 auto;
+    padding-top: 16px;
+}
+
 .todo-menu {
     display: none;
     position: absolute;
@@ -82,7 +113,6 @@ function toPage(e: typeof menus[number]) {
     border-radius: 8px;
     margin-right: 12px;
     overflow: hidden;
-
     .menuCheck {
         background-color: var(--mug-dividing);
     }

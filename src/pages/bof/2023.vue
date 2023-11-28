@@ -56,7 +56,7 @@
 
 <script lang="tsx" setup>
 import {type  Bof, getBof2023List, getChartsData, getSelectTimeList } from "@/api/bof";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 // import { Base } from "@/layouts/default.vue";
 import { type DataTableCreateRowProps, NDataTable, NSelect,type SelectOption } from "naive-ui";
 import { type TableColumn } from "naive-ui/es/data-table/src/interface";

@@ -1,5 +1,5 @@
 <template>
-    <!-- <List v-model:loading="status.loading" :finished="status.finished" :immediate-check="false" @load="load_comment"> -->
+
     <ul>
         <li v-for="[id, item] in comments" class="comment" v-show="!item.isHidden" :key="item.id">
             <RouterLink target="_blank" :to="`/account/${getUser(item.createdUserId)?.id}`" style="min-width: 50px;">
@@ -15,8 +15,8 @@
                     <div class="justify-center flex items-center commentLike" @click="likeComment(item)">
                         <span class="likeCount">{{ item.likeCount }}</span>
 
-                        <box-icon v-show="item.relations?.isLiked" name='heart'></box-icon>
-                        <box-icon v-show="!item.relations?.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
+                        <box-icon v-show="!item.relations?.isLiked" name='heart' />
+                        <box-icon v-show="item.relations?.isLiked" name='heart' type='solid' color='#fb0101' />
 
                     </div>
                 </div>
@@ -43,10 +43,10 @@
                                 </RouterLink>
                                 <div class="justify-center flex items-center commentLike" @click="likeComment(child)">
                                     <span class="likeCount">{{ child.likeCount }}</span>
-                                    <box-icon v-show="child.relations?.isLiked" name='heart'></box-icon>
-                                    <box-icon v-show="!child.relations?.isLiked" name='heart' type='solid'
-                                        color='#fb0101'></box-icon>
-                                    
+                                    <box-icon v-show="!child.relations?.isLiked" name='heart' />
+                                    <box-icon v-show="child.relations?.isLiked" name='heart' type='solid' color='#fb0101' />
+
+
                                 </div>
                             </div>
                             <div class="commentContent">{{ child.content }}</div>
@@ -62,32 +62,29 @@
         </li>
 
     </ul>
-    <!-- <template #finished>
-            <Empty v-if="comments.size <= 0" description="暂无评论" />
-            <span v-else="comments.size > 0">没有更多了</span>
-        </template>
-        <template #loading>
-            <Empty v-if="comments.size <= 0" image="search" description="加载中" />
-            <span v-else="comments.size > 0">加载中</span>
-        </template>
-        <template #error>
-            <Empty image="error" v-if="comments.size <= 0" description="加载失败" />
-            <span v-else="comments.size > 0">加载失败</span>
-        </template> -->
-    <!-- </List> -->
+
+    <n-empty class="p-t-10 p-b-10" v-if="status === 'zero'" description="暂无评论" />
+    <span class="endtext" v-if="status === 'end'">没有更多了</span>
+
+    <span class="endtext" v-if="status === 'loading'">加载中</span>
+
+    <n-empty class="p-t-10 p-b-10" image="error" v-if="status === 'netword'" description="加载失败" />
+    <span class="endtext" v-if="status === 'netword' && comments.size <= 0">加载失败</span>
 </template>
 
 <script lang="tsx" setup >
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { commentLike } from "@/api/comment";
 import type { Comment } from '@/api/post';
 import type { User } from '@/api/user';
 import type { CommentStatus } from "@/pages/article/index.vue";
 import { useMessage } from "naive-ui";
+import { useApiToPaginationInstance } from "@/utils";
 
 interface Prop {
     users?: Map<number, User>;
     comments: Map<Comment["id"], Comment>;
+    status: useApiToPaginationInstance["status"]["value"];
 }
 
 
@@ -100,6 +97,7 @@ function getUser(id: number) {
     return props.users?.get(id)
 }
 function getCreateTime(time: string) {
+    console.log(dayjs.locale("zh-cn"))
     return dayjs(dayjs()).diff(time, "hour") > 12 ? dayjs(time).format("YYYY/MM/DD HH:mm") : dayjs(time).fromNow();
 }
 interface Emit {
@@ -217,5 +215,12 @@ async function likeComment(comment: Comment) {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.endtext {
+    color: #ccc;
+    font-size: 12px;
+    text-align: center;
+    padding: 14px 0 20px;
 }
 </style>

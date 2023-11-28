@@ -1,7 +1,7 @@
 
 <template>
     <div class="box">
-        <n-image object-fit="cover" width="410" :src="imageSrc" :fallback-src="defalutSrc" alt="背景图" />
+        <img width="770" height="770" class="image" :src="imageSrc" alt="背景图">
     </div>
 </template>
 
@@ -23,15 +23,20 @@ const imageSrc = computed(() => {
     height: 100%;
     position: relative;
 
-    // &::after {
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     content: "";
-    //     height: 100%;
-    //     width: 100%;
-    //     // backdrop-filter: blur(1px);
-    // }
+    &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+        height: 100%;
+        width: 100%;
+        // backdrop-filter: blur(1px);
+    }
 
+    .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 </style>

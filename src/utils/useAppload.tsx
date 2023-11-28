@@ -41,6 +41,13 @@ export function useApploadData() {
             }
         }
     }
+    let locale = localStorage.getItem("local") || navigator.language.toLowerCase();
+    if (!["zh-cn", "en-us"].includes(locale)) {
+        locale = "zh-cn"
+    }
+    return {
+        locale
+    }
 }
 export function useAppload() {
     const message = useMessage();

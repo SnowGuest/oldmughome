@@ -3,13 +3,14 @@
     <ScrollView>
         <div class="creator">
             <div class="card column">
-                <input v-model="form.title" type="text" class="titleInput" placeholder="标题">
+                <input v-model="form.title" type="text" class="titleInput outline-none" placeholder="标题">
                 <MdEditor ref="editorRef" @on-upload-img="onUploadImg" :toolbars="toolbar" class="Editor"
                     v-model="form.content">
                     <template #defToolbars>
                         <NormalToolbar title="Bilibili" @onClick="addBilibili">
                             <template #trigger>
-                                <Icon name="ri:bilibili-line"></Icon>
+                                <i class="fa-brands fa-bilibili"></i>
+                                <!-- <Icon name="ri:bilibili-line"></Icon> -->
                             </template>
                         </NormalToolbar>
                     </template>
@@ -182,16 +183,14 @@ async function addBilibili() {
 
 async function loadCategories() {
     const { data } = await getCategories()
-    console.log(data.categories)
-    return data.categories
-
+    categories.value = data.categories
 }
 
 loadCategories()
 const categorieOneOptions = computed<SelectOption[]>(() => {
     return categories.value.map(e => ({
         label: e.name,
-        value: e.id
+        value: e.id,
     }))
 });
 

@@ -62,7 +62,7 @@
 import {type Monf, getMonf2023List } from "@/api/monf";
 import ScrollView from "@/components/scrollview/scrollView.vue";
 import { useHead } from "@unhead/vue";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 // import { Base } from "@/layouts/default.vue";
 import { type DataTableCreateRowProps, NDataTable, NTag } from "naive-ui";
 import {type  TableColumn } from "naive-ui/es/data-table/src/interface";

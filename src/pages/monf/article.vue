@@ -166,7 +166,7 @@ import { getMonf2023, monfLike, monfunLike, type Monf } from '@/api/monf';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user';
 import { followUserApi, unfollowUserApi, type User } from '@/api/user';
-import dayjs from 'dayjs';
+import dayjs from "dayjs/esm";
 // import { showSuccessToast } from 'vant';
 // import { CommentStatus, SelectComment } from '@/components/article/preload';
 // import { ArticleSortField, GetArticleParams, MonfVoteDetail } from "@/api/post";

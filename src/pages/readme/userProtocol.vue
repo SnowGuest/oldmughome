@@ -3,6 +3,8 @@
 </template>
 
 <script lang="ts" setup>
+import { nextTick, reactive, ref } from 'vue';
+
 
 </script>
 <style lang="scss" scoped></style>

@@ -49,7 +49,7 @@
 <script lang="tsx" setup >
 import ShowComment from "@/components/monf/monfShowComment.vue"
 import CommentVote from "./monfCommentVote.vue"
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 import { ArticleSortField, type GetArticleParams } from '@/api/post';
 import { type Monf2023CommentsBody, type MonfComment, monfCommentLike, monfunCommentLike } from '@/api/monf';
 import { getMonf2023Comment } from "@/api/monf";

@@ -43,7 +43,7 @@
                     class="flex  items-center justify-between control_model" @click.prevent="likeThis">
                     <!-- <HeartIcon v-show="article.relations.isLiked" /> -->
                     <!-- <HeartSolidIcon style="color:#fb0101" v-show="!article.relations.isLiked" /> -->
-                    <box-icon v-show="!article.relations.isLiked" name='heart' class="xxxxxxxxxxxxxxx"></box-icon>
+                    <box-icon v-show="!article.relations.isLiked" name='heart' ></box-icon>
                     <box-icon v-show="article.relations.isLiked" name='heart' type='solid' color='#fb0101'></box-icon>
                     <span>{{ likeCount }}</span>
                 </div>
@@ -64,7 +64,7 @@
 import type { User } from "@/api/user";
 import ArticleTag from "@/components/article/tag.vue"
 import { type Article, attentionUser, like } from "@/api/post";
-import dayjs from "dayjs"
+import dayjs from "dayjs/esm"
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import type { Categorie } from "@/api/categorie";

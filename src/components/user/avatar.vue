@@ -6,13 +6,13 @@
             </template>
             <div></div>
             <div class="p-2">
-                <div class="flex items-center">
+                <RouterLink :to="`/account/${userInfo?.id}`" class="flex items-center cursor-pointer" title="个人中心">
                     <n-avatar class="mr-2" round size="large" :src="userInfo?.avatarUrl" />
                     <div class="flex-1 flex flex-col">
-                        <n-button text class="text-4">{{ userInfo?.nickName }}</n-button>
-                        <n-button text class="text-4">{{ userInfo?.points }}</n-button>
+                        <span text class="text-4">{{ userInfo?.nickName }}</span>
+                        <span class="text-3">积分：{{ userInfo?.points }}</span>
                     </div>
-                </div>
+                </RouterLink>
                 <n-divider />
                 <div class="grid grid-cols-2">
                     <n-button quaternary>

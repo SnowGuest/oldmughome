@@ -7,7 +7,7 @@ import { useUserStore } from "@/stores/user";
 import { getUserMap, useApiToPagination } from "@/utils";
 import { reactive, type Ref, ref } from "vue";
 import type { InstanceBody } from "@/utils/request";
-import dayjs from "dayjs";
+import dayjs from "dayjs/esm";
 
 /** 评论列表状态 */
 export interface CommentStatus {
@@ -142,7 +142,7 @@ export function init(id: string) {
     /**  帖子的菜单项 */
     const articleActions: any[] = []// [{ text: "举报" }];
     /** MarkDown状态 */
-    const markDownState = reactive({ id: "preview-md" });
+    // const markDownState = reactive({ id: "preview-md" });
     /** 回复评论时候的临时变量 */
     const selectComment = reactive<SelectComment>({
         show: false,
@@ -154,7 +154,7 @@ export function init(id: string) {
     return {
         searchParams,
         articleActions,
-        markDownState,
+        // markDownState,
         selectComment,
         ...ArticleInfo,
     }
